@@ -1,23 +1,31 @@
 import React, { useRef, useEffect, useState } from "react";
 import Chart from "chart.js/auto";
+import Session from "../backend/Session";
 
-const PieChart = ({cuisineData}) => {
+const PieChart = ({ allRecipes }) => {
 	const chartRef = useRef(null);
 	const [data, setData] = useState(null);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetch("/data/cuisines.json");
-				const jsonData = await response.json();
+				const jsonData = await Session.getCuisines();
 
-				const randomizedData = jsonData.map((item, index) => ({
+				const data = jsonData.map((item, index) => ({
 					label: item.cuisine,
-					value: cuisineData[index], // Random number between 0 and 100
+					value: 0, // Random number between 0 and 100
 					backgroundColor: item.color,
 				}));
 
-				setData(randomizedData);
+				allRecipes.map((recipe, index) => {
+					for (let d in data) {
+						if (data[d].label == recipe.cuisine) {
+							data[d].value++;
+						}
+					}
+				})
+
+				setData(data);
 			} catch (error) {
 				console.error("Error fetching data: ", error);
 			}

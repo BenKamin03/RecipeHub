@@ -1,15 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 
 import { faPlus, faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Session from "../../backend/Session";
 
 const Submit = () => {
-	const [file, setFile] = useState(null);
-	const [isHovering, setIsHovering] = useState(false);
 
-	const handleHover = () => {
-		setIsHovering(!isHovering);
-	};
+	if (!Session.isLoggedIn()) {
+		Session.redirectTo(null, "/");
+	}
+
+
+	const [file, setFile] = useState(null);
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const [ingredients, setIngredients] = useState([""]);
+	const [instruction, setInstructions] = useState("");
+	const [tags, setTags] = useState([]);
+	const [tagsText, setTagsText] = useState("")
 
 	const handleFileChange = (event) => {
 		const selectedFile = event.target.files[0];
@@ -20,81 +28,126 @@ const Submit = () => {
 		}
 	};
 
-	const [inputs, setInputs] = useState([""]); // State to hold input values
+	const handleInputChange = (event, setter) => {
+		setter(event.target.value);
+	};
 
 	const handleAddInput = () => {
-		setInputs([...inputs, ""]); // Add an empty input
+		setIngredients([...ingredients, ""]); // Add an empty ingredient
 	};
 
 	const handleRemoveInput = (index) => {
-		if (inputs.length > 1) {
-			const newInputs = [...inputs];
-			newInputs.splice(index, 1); // Remove input at index
-			setInputs(newInputs);
+		if (ingredients.length > 1) {
+			const newIngredients = [...ingredients];
+			newIngredients.splice(index, 1); // Remove ingredient at index
+			setIngredients(newIngredients);
 		}
 	};
 
-	const handleInputChange = (index, event) => {
-		const newInputs = [...inputs];
-		newInputs[index] = event.target.value; // Update input value at index
-		setInputs(newInputs);
+	const handleIngredientChange = (index, event) => {
+		const newIngredients = [...ingredients];
+		newIngredients[index] = event.target.value;
+		setIngredients(newIngredients);
 	};
 
+	const handleTagsChange = (e) => {
+		const currText = e.target.value;
+		let newText = "";
+		const localTags = currText.split(" ");
+		for (let i of localTags) {
+			if (i[0] != "#")
+				i = `#${i}`;
+			newText += i;
+		}
+		newText = newText.substring(0, newText.length);
+		newText = newText.length > 1 ? newText : ""
+		setTagsText(newText);
+		setTags(newText.split("#").splice(1));
+	}
+
+	const handleSumbit = (e) => {
+		if (title === "") {
+			alert("Title is Empty")
+		} else if (description === "") {
+			alert("Description is Empty")
+		} else if (ingredients.length === 1 && ingredients[0] === "") {
+			alert("Ingredients are Empty")
+		} else if (instruction === "") {
+			alert("Instructions are Empty")
+		} else if (file === null) {
+			alert("No File Submitted")
+		} else {
+			Session.submitRecipe(e, { file: file, tags: tags, description: description, title: title, ingredients: ingredients, instruction: instruction })
+		}
+	}
+
 	return (
-		<div className="mx-24">
-			<h1 className="text-center">Submit a Recipe</h1>
+		<div className="mx-24 py-12">
+			<h1 className="text-center font-semibold text-3xl mb-4">Submit a Recipe</h1>
 			<form className="flex justify-center items-center text-center flex-col gap-2">
 				<input
 					type="text"
 					name="RecipeName"
-					className="text-center w-1/2 py-2 border-2 border-black rounded-lg"
+					value={title}
+					onChange={(event) => handleInputChange(event, setTitle)}
+					className="text-center w-2/3 py-2 border-2 border-black rounded-lg"
 					placeholder="Recipe Title"
 				/>
 				<textarea
 					type="text"
 					name="RecipeDescription"
-					className="resize-none text-center w-1/2 pb-16 border-2 border-black rounded-lg"
+					value={description}
+					onChange={(event) => handleInputChange(event, setDescription)}
+					className="resize-none text-center w-2/3 pb-16 border-2 border-black rounded-lg"
 					placeholder="Recipe Description"
 				/>
-				<div className="grid grid-cols-2 gap-0 w-1/2">
-					<label htmlFor="RecipeImage" className="bg-gray-100 mr-2">
-						<div className="mb-5">
+				<input
+					type="text"
+					name="RecipeTags"
+					value={tagsText}
+					onChange={(event) => handleTagsChange(event)}
+					className="text-center w-2/3 py-2 border-2 border-black rounded-lg"
+					placeholder="#RecipeTags"
+				/>
+				<div className="grid grid-cols-2 gap-0 w-2/3 pt-1">
+					<label htmlFor="RecipeImage" className="pr-2 border-r-2">
+						<div className="mb-5 cursor-pointer">
 							{file ? (
 								<div
 									className="rounded-lg bg-no-repeat bg-center bg-cover aspect-square"
 									style={{
 										backgroundImage: `url(${URL.createObjectURL(file)})`,
 									}}>
-									<div className="bg-gray-900 opacity-0 hover:opacity-50 rounded-lg aspect-square flex justify-center items-center flex-col">
+									<div className="bg-neutral-900 bg-opacity-0 opacity-0 hover:bg-opacity-80 hover:opacity-100 transition-all ease-in-out rounded-lg aspect-square flex justify-center items-center flex-col">
 										<h1 className="text-xl text-white">Upload Image</h1>
-										<FontAwesomeIcon className="text-5xl" icon={faUpload} />
+										<FontAwesomeIcon className="text-5xl text-white" icon={faUpload} />
 									</div>
 								</div>
 							) : (
-								<div className="bg-gray-500 rounded-lg aspect-square flex justify-center items-center flex-col">
+								<div className="bg-neutral-900 text-white rounded-lg aspect-square flex justify-center items-center flex-col">
 									<h1 className="text-xl">Upload Image</h1>
 									<FontAwesomeIcon className="text-5xl" icon={faUpload} />
 								</div>
 							)}
 						</div>
-						<label class="w-full text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center justify-center mr-2 mb-2 cursor-pointer">
-							<span class="text-center ml-2">Upload</span>
-						</label>
+						<div className="w-full text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center justify-center mr-2 mb-2 cursor-pointer">
+							<span className="text-center ml-2">Upload</span>
+						</div>
 						<input id="RecipeImage" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
 					</label>
 
 					<div className="inline-block text-center pl-2 w-full justify-end">
 						<div className="overflow-auto aspect-square mb-4">
-							{inputs.map((input, index) => (
+							{ingredients.map((ingredient, index) => (
 								<div key={index} className="mb-2 w-full flex items-center">
 									<input
 										type="text"
-										value={input}
-										onChange={(event) => handleInputChange(index, event)}
+										value={ingredient}
+										onChange={(event) => handleIngredientChange(index, event)}
 										className="flex-1 border rounded py-2 px-3 focus:outline-none focus:border-blue-400"
 										placeholder={`Ingredient #${index + 1}`}
 									/>
-									{inputs.length > 1 && (
+									{ingredients.length > 1 && (
 										<button
 											type="button"
 											onClick={() => handleRemoveInput(index)}
@@ -118,9 +171,18 @@ const Submit = () => {
 				<textarea
 					type="text"
 					name="RecipeInstructions"
-					className="resize-none text-center w-1/2 pb-48 border-2 border-black rounded-lg"
+					value={instruction}
+					onChange={(event) => handleInputChange(event, setInstructions)}
+					className="resize-none text-center w-2/3 pb-48 border-2 border-black rounded-lg"
 					placeholder="Recipe Instructions"
 				/>
+				<button
+					type="button"
+					onClick={handleSumbit}
+					className="text-white mt-1 w-2/3 py-6 rounded bg-[#050708] hover:bg-[#050708]/90">
+					<FontAwesomeIcon icon={faPlus} className="mr-2" />
+					Submit
+				</button>
 			</form>
 		</div>
 	);

@@ -1,13 +1,13 @@
 import React from "react";
+import Session from "../backend/Session";
 
 const Button = ({ name, href, mainColor, borderColor, textColor }) => {
 	return (
 		<div
                onClick={(e) => {
-                    e.stopPropagation();
-                    window.location.href = href;
+                    Session.redirectTo(e, href)
                }}
-			className={`bg-${mainColor} border-${borderColor} text-${textColor} border-2 flex justify-center items-center rounded-md w-64 h-12 hover:bg-${borderColor} hover:bg-${borderColor} hover:scale-110 transition-all ease-in-out`}>
+			className={`cursor-pointer bg-${mainColor} border-${borderColor} text-${textColor} border-2 flex justify-center items-center rounded-md w-full h-12 hover:border-${borderColor} hover:bg-${borderColor} hover:scale-110 transition-all ease-in-out`}>
 			{name}
 		</div>
 	);

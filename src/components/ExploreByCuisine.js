@@ -1,26 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Session from "../backend/Session";
+
 
 const ExploreByCuisine = () => {
-	const cuisines = [
-		{ name: "Thai", href: "", img: "" },
-		{ name: "American", href: "", img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg" },
-		{ name: "Chinese", href: "", img: "" },
-		{ name: "Mexican", href: "", img: "" },
-		{ name: "Indian", href: "", img: "" },
-		{ name: "View All", href: "", img: "" },
-	];
+
+	const [cuisines, setCuisines] = useState([]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const jsonData = await Session.getCuisines();
+
+				const data = [];
+
+				const addData = (arr) => {
+					const addToData = (cuisine) => {
+						for (let ele of jsonData) {
+							if (ele.cuisine === cuisine) {
+								data.push({ cuisine: ele.cuisine, img: ele.img });
+							}
+						}
+					}
+
+					for (let ele of arr) {
+						addToData(ele);
+					}
+				}
+
+				addData(["Thai", "American", "Chinese", "Mexican", "Indian", "Italian"])
+
+				setCuisines(data);
+			} catch {
+
+			}
+		}
+
+		fetchData();
+	}, [])
 
 	return (
 		<div className={`grid grid-cols-6 gap-2`}>
 			{cuisines.map((cuisine, index) => (
-				<button className="hover:scale-110 transition ease-in-out"
-					onClick={(e) => {
-						e.stopPropagation();
-						window.location.href = cuisine.href;
-					}}
-                         key={index}>
-                         <div className={"h-24 w-full bg-black rounded-md mr-4 bg-center bg-cover bg-[url('" + cuisine.img + "')]"}/>
-					<p>{cuisine.name}</p>
+				<button className="hover:scale-110 transition ease-in-out relative h-28"
+					onClick={(e) => Session.redirectTo(e, `/browse?cuisine=${cuisine.cuisine.toLowerCase()}`)}
+					key={index}>
+					<img
+						src={cuisine.img}
+						className="h-full w-full rounded-md mr-4 object-center object-cover bg-black"
+						alt={cuisine.name}
+					/>
+					<div className='absolute left-0 top-0 rounded-md h-full w-full flex justify-center items-center text-white hover:font-semibold bg-black bg-opacity-60'>
+						<p>{cuisine.cuisine}</p>
+					</div>
 				</button>
 			))}
 		</div>

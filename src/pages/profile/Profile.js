@@ -1,185 +1,143 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Button from "../../components/Button.js";
 import RecipeRow from "../../components/RecipeRow.js";
 import PieChart from "../../components/PieChart.js";
 import TopCuisines from "../../components/TopCuisines.js";
 import RecipeGrid from "../../components/RecipeGrid.js";
+import Session from "../../backend/Session.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus, faUserMinus, faEdit, faCog, faSign, faSignIn, faRegistered, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
-	const [recipes, setRecipes] = useState([]);
+	const queries = Session.getQueries();
 
-	const profile = {
-          username: "Username",
-          bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-		profilePhotot: "",
-		showcase: [
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic", "Peppers", "American"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-		],
-		cuisineData: Array.from({ length: 50 }, () => Math.floor(Math.random() * 1.1)),
-		allRecipes: [
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-			{
-				name: "Tri-Tip Steak",
-				href: "",
-				img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-				description:
-					"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-				cuisine: "American",
-				tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-			},
-		],
-	};
+	if (!queries || !queries.name) {
+		Session.redirectTo("/")
+	}
+
+	let profile = Session.getProfile(queries.name);
+
+	let session = Session.getSessionData();
+
+	let isLoggedIn = Session.isLoggedIn();
+
+	const [isFollowing, setIsFollowing] = useState(false);
+
+	let isSelf = false;
+
+	if (isLoggedIn) {
+		isSelf = isLoggedIn && Session.getSessionData().username === profile.username || false;
+		setTimeout(0, () => setIsFollowing((((Session.getProfile(Session.getSessionData().username)).following.includes(profile.username)))));
+	}
+
+	const checkIsFollowing = () => {
+		setIsFollowing((isSelf ? false : ((Session.getProfile(Session.getSessionData().username)).following.includes(profile.username))));
+	}
+
+	const showcase = [];
+
+	for (let id of profile.showcase) {
+		showcase.push(Session.getRecipeFromID(id));
+	}
+
+	const allRecipes = [];
+
+	for (let id of profile.allRecipes) {
+		allRecipes.push(Session.getRecipeFromID(id));
+	}
 
 	return (
-		<div className="mx-24 h-full">
-			<div className="flex flex-rows gap-8">
-				<div className="bg-slate-100 h-full w-[30%]">
+		<div className="mx-24">
+			<div className="grid grid-cols-4 gap-16">
+				<div className=" h-full p-4 border-r-2">
 					<div className="flex justify-center items-center flex-col gap-2">
-						<div className="w-full aspect-square bg-white rounded-full" />
+						<div className="w-full aspect-square bg-gray-500 rounded-full">
+							<img
+								src={profile.img}
+								className="h-full w-full rounded-full mr-4 object-center object-cover bg-black"
+								alt="Profile"
+							/>
+						</div>
 						<h1 className="text-center text-xl font-semibold">{profile.username}</h1>
-                              <Button textColor={"white"} href="/" name="Edit Profile" mainColor="black" borderColor="black" />
-                              <p className="mx-2">{profile.bio}</p>
+						<a href={`/following?name=${profile.username}`} className="flex flex-row gap-4 cursor-pointer">
+							<p className="font-extrabold">{profile.followers.length} <label className="font-light cursor-pointer">Follower{profile.followers.length !== 1 && "s"}</label></p>
+							<p className="font-extrabold">{profile.following.length} <label className="font-light cursor-pointer">Following</label></p>
+						</a>
+						{isLoggedIn ?
+							<div className="w-full">
+								{isSelf ?
+									<div className="w-full flex flex-row gap-2">
+										<div
+											onClick={(e) => {
+												Session.redirectTo(e, "/edit-profile")
+											}}
+											className={`cursor-pointer relative bg-black border-black text-white border-2 flex justify-center items-center rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out gap-4`}>
+											<FontAwesomeIcon className="absolute left-0 ml-3" icon={faEdit} />{<p>Edit</p>}
+										</div>
+										<div
+											onClick={(e) => {
+												Session.redirectTo(e, "/settings")
+											}}
+											className={`cursor-pointer bg-black border-black text-white border-2 flex justify-center items-center w-12 rounded-md hover:scale-110 transition-all ease-in-out`}>
+											<FontAwesomeIcon className="text-xl" icon={faCog} />
+										</div>
+									</div>
+									:
+									<div
+										onClick={(e) => {
+											Session.toggleFollow(profile.username, [checkIsFollowing])
+										}}
+										className={`cursor-pointer relative bg-black border-black text-white border-2 flex justify-center items-center rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out gap-4`}>
+										<FontAwesomeIcon className="absolute left-0 ml-3" icon={isFollowing ? faUserMinus : faUserPlus} />{isFollowing ? <p>Unfollow</p> : <p>Follow</p>}
+									</div>
+								}
+							</div>
+							:
+							<div className="w-full flex flex-row gap-1">
+								<div
+									onClick={(e) => {
+										Session.redirectTo(e, "/login")
+									}}
+									className={`cursor-pointer relative bg-black border-black text-white border-2 flex justify-center items-center rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out gap-4`}>
+									<FontAwesomeIcon className="absolute left-0 ml-3" icon={faSignIn} /><p>Log In</p>
+								</div>
+								<div
+									onClick={(e) => {
+										Session.redirectTo(e, "/register")
+									}}
+									className={`cursor-pointer relative bg-black border-black text-white border-2 flex justify-center items-center rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out gap-4`}>
+									<FontAwesomeIcon className="absolute left-0 ml-3" icon={faPlusSquare} /><p>Register</p>
+								</div>
+							</div>}
+						<p className="mx-2 text-center">{profile.bio}</p>
 					</div>
 				</div>
-				<div className="w-[70%]">
+				<div className="col-span-3">
 					<div>
 						<h1 className="mb-2 mt-6 text-xl font-semibold">Showcase</h1>
-						<RecipeRow recipes={profile.showcase} />
+						<RecipeRow recipes={showcase} />
 					</div>
-					<div className="">
-						<h1 className="mb-2 mt-6 text-xl font-semibold">Cuisine Breakdown</h1>
-						<div className="flex flex-row border-2 border-black rounded-md p-4">
-							<div className="h-min w-full">
-								<div className="flex w-full justify-center flex-row items-center gap-10">
-									<PieChart cuisineData={profile.cuisineData} />
-									<TopCuisines cuisineData={profile.cuisineData} />
+					{profile.allRecipes.length > 0 &&
+						<div className="">
+							<h1 className="mb-2 mt-6 text-xl font-semibold">Cuisine Breakdown</h1>
+							<div className="flex flex-row border-2 border-black rounded-md p-4">
+								<div className="h-min w-full">
+									<div className="flex w-full justify-center flex-row items-center gap-10">
+										<PieChart allRecipes={allRecipes} />
+										<TopCuisines max={5} allRecipes={allRecipes} />
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					}
 					<div>
 						<h1 className="mb-2 mt-6 text-xl font-semibold">All Recipes</h1>
-						<RecipeGrid recipes={profile.allRecipes} />
+						<RecipeGrid recipes={allRecipes} />
 					</div>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 };
 

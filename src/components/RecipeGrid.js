@@ -4,7 +4,7 @@ import RecipeRow from "./RecipeRow";
 
 const RecipeGrid = ({ recipes, cols }) => {
 
-     const convertToDoubleArray = (array, rowSize) => {
+	const convertToDoubleArray = (array, rowSize) => {
 		const doubleArray = [];
 		let tempArray = [];
 		for (let i = 0; i < array.length; i++) {
@@ -18,9 +18,11 @@ const RecipeGrid = ({ recipes, cols }) => {
 	};
 
 	return (
-		<div className={``}>
+		<div>
 			{convertToDoubleArray(recipes, 3).map((row, index) => (
-				<RecipeRow key={index} recipes={row} />
+				<div className="my-4" key={index}>
+					<RecipeRow key={index} recipes={row} />
+				</div>
 			))}
 		</div>
 	);

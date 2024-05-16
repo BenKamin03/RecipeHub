@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Cuisines from "../../../components/ExploreByCuisine.js";
 import RecipeRow from "../../../components/RecipeRow.js";
+import Session from "../../../backend/Session.js";
 
 const Home_2 = () => {
 	const trendingRecipes = [
@@ -50,62 +51,20 @@ const Home_2 = () => {
 	];
 
 	return (
-		<div>
+		<div className="mb-24">
 			<div className="flex justify-between">
-				<h1 className="mb-2 mt-6 text-xl font-semiboldbold">Explore by Cuisine</h1>
+				<h1 className=" mt-6 mb-4 text-xl font-semibold">Explore by Cuisine</h1>
 				<button
 					onClick={(e) => {
 						e.stopPropagation();
 						window.location.href = "/cuisines";
 					}}
-					className="flex mb-2 mt-6 text-xl font-semiboldbold hover:scale-110 transition-all ease-in-out">
+					className="flex  mt-6 text-xl font-semibold hover:scale-110 transition-all ease-in-out">
 					<h1 className="">View More</h1>
 					<FontAwesomeIcon className="mt-1 ml-2" icon={faArrowRight} />
 				</button>
 			</div>
 			<Cuisines />
-
-			<div className="flex justify-between">
-				<h1 className="mb-2 mt-6 text-xl font-semibold">Trending Recipes</h1>
-				<button
-					onClick={(e) => {
-						e.stopPropagation();
-						window.location.href = "/trending";
-					}}
-					className="flex mb-2 mt-6 text-xl font-semiboldbold hover:scale-110 transition-all ease-in-out">
-					<h1 className="">View More</h1>
-					<FontAwesomeIcon className="mt-1 ml-2" icon={faArrowRight} />
-				</button>
-			</div>
-			<RecipeRow recipes={trendingRecipes} />
-
-			<div className="flex justify-between">
-				<h1 className="mb-2 mt-6 text-xl font-semibold">Best Recipes</h1>
-				<button
-					onClick={(e) => {
-						e.stopPropagation();
-						window.location.href = "/best";
-					}}
-					className="flex mb-2 mt-6 text-xl font-semiboldbold hover:scale-110 transition-all ease-in-out">
-					<h1 className="">View More</h1>
-					<FontAwesomeIcon className="mt-1 ml-2" icon={faArrowRight} />
-				</button>
-			</div>
-			<RecipeRow recipes={bestRecipes} />
-
-			<div className="flex justify-between">
-				<h1 className="mb-2 mt-6 text-xl font-semibold">Latest Recipes</h1>
-				<button
-					onClick={(e) => {
-						e.stopPropagation();
-						window.location.href = "/latest";
-					}}
-					className="flex mb-2 mt-6 text-xl font-semiboldbold hover:scale-110 transition-all ease-in-out">
-					<h1 className="">View More</h1>
-					<FontAwesomeIcon className="mt-1 ml-2" icon={faArrowRight} />
-				</button>
-			</div>
-			<RecipeRow recipes={latestRecipes} />
 		</div>
 	);
 };
