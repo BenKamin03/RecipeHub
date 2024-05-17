@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Session from '../backend/Session';
 
-const CuisinesSearchOptions = () => {
+const CuisinesSearchOptions = ({setCuisine}) => {
 
     const [data, setData] = useState([]);
 

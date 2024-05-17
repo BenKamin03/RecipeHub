@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Session from '../../backend/Session'
 import Ingredient from '../../components/Ingredient';
 import Comment from '../../components/Comment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faStar as solidStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faStar as outlineStar } from '@fortawesome/free-regular-svg-icons';
 
 const Recipe = () => {
 
@@ -16,6 +17,9 @@ const Recipe = () => {
     const recipe = Session.getRecipeFromID(queries.id);
 
     const isSelf = Session.isLoggedIn() && Session.getSessionData().username === recipe.author;
+
+    const isSaved = Session.isLoggedIn() && Session.getProfile(Session.getSessionData().username).saved.includes(queries.id);
+    const [isHoveringSaved, setIsHoveringSaved] = useState(false);
 
     return (
         <div className='mx-24 my-12 flex flex-col justify-center items-center'>
@@ -31,7 +35,20 @@ const Recipe = () => {
                 </div>
                 <div className='w-1/2 p-4'>
                     <div className='aspect-square overflow-auto'>
-                        <h1 className='text-center font-semibold text-3xl mt-4'>{recipe.name}</h1>
+                        <div className='flex flex-row justify-center'>
+                            <h1 className='text-center font-semibold text-3xl mt-4 flex flex-row'>
+                                {!isSelf && Session.isLoggedIn() &&
+                                    <div className='text-yellow-500 mr-2 cursor-pointer' onMouseOver={(e) => setIsHoveringSaved(true)} onMouseLeave={(e) => setIsHoveringSaved(false)} onClick={(e) => Session.toggleSaved(queries.id)}>
+                                        {isSaved ? !isHoveringSaved : isHoveringSaved ?
+                                            <FontAwesomeIcon icon={solidStar} />
+                                            :
+                                            <FontAwesomeIcon icon={outlineStar} />
+                                        }
+                                    </div>
+                                }
+                                {recipe.name}
+                            </h1>
+                        </div>
                         <div className='flex flex-row h-min justify-center content-center my-2'>
                             <a href={`/profile?name=${recipe.author}`} className='flex flex-row justify-center content-center'>
                                 <div className='bg-black aspect-square h-10 rounded-full'>

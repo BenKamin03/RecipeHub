@@ -22,9 +22,7 @@ const Profile = () => {
 
 	let isLoggedIn = Session.isLoggedIn();
 
-	const [isFollowing, setIsFollowing] = useState(false);
-
-	let isSelf = false;
+		let isSelf = false;
 
 	if (isLoggedIn) {
 		isSelf = isLoggedIn && Session.getSessionData().username === profile.username || false;
@@ -32,8 +30,19 @@ const Profile = () => {
 	}
 
 	const checkIsFollowing = () => {
-		setIsFollowing((isSelf ? false : ((Session.getProfile(Session.getSessionData().username)).following.includes(profile.username))));
+		if (!isSelf) {
+			const userFollowers = Session.getProfile(Session.getSessionData().username).following;
+			return(userFollowers.findIndex((name) => name == profile.username) != -1);
+		} else {
+			return(false);
+		}
 	}
+
+	const updateFollowing = () => {
+		setIsFollowing(checkIsFollowing());
+	}
+
+	const [isFollowing, setIsFollowing] = useState(checkIsFollowing());
 
 	const showcase = [];
 
@@ -86,7 +95,7 @@ const Profile = () => {
 									:
 									<div
 										onClick={(e) => {
-											Session.toggleFollow(profile.username, [checkIsFollowing])
+											Session.toggleFollow(profile.username, [updateFollowing])
 										}}
 										className={`cursor-pointer relative bg-black border-black text-white border-2 flex justify-center items-center rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out gap-4`}>
 										<FontAwesomeIcon className="absolute left-0 ml-3" icon={isFollowing ? faUserMinus : faUserPlus} />{isFollowing ? <p>Unfollow</p> : <p>Follow</p>}

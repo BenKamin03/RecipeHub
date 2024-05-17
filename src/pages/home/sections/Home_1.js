@@ -45,26 +45,12 @@ const Home_1 = () => {
 				</div>
 			</div>
 
-			<Carousel
-				autoPlay={true} showStatus={false} showIndicators={false} showThumbs={false}
-				className="bg-black col-span-2 rounded-3xl">
-				{cuisines.map((cuisine, index) => (
-					<div className="transition ease-in-out relative rounded-3xl h-full cursor-pointer"
-						onClick={(e) => Session.redirectTo(e, `/browse?cuisine=${cuisine.cuisine.toLowerCase()}`)}
-						key={index}>
+
 						<img
-							src={cuisine.img}
-							className="h-full w-full rounded-3xl mr-4 object-center object-cover bg-black"
-							alt={cuisine.name}
-						/>
-						<div className='absolute left-0 top-0 rounded-3xl h-full w-full flex justify-center items-center text-white bg-black bg-opacity-60'>
-							<div className="w-full h-full justify-center items-center flex hover:scale-110 transition-all ease-in-out">
-								<p className="text-4xl">{cuisine.cuisine}</p>
-							</div>
-						</div>
-					</div>
-				))}
-			</Carousel>
+							src="https://assets-global.website-files.com/64d8e1941fab27b22290703e/65157cf16020f5e6e4109c39_baby-egg-roll.png"
+							className="h-full w-full rounded-md mr-4 object-center object-contain col-span-2 aspect-square" />
+
+
 
 
 

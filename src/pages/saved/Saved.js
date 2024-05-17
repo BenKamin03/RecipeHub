@@ -22,16 +22,16 @@ const Saved = () => {
             queryString += `&${q}=${queries[q]}`;
     }
 
-    const handleSearch = (query) => {
-        Session.redirectTo(null, `/saved?search=${query}${queryString}`)
+    const handleSearch = (e, query) => {
+        Session.redirectTo(e, `/saved?search=${query}${queryString}`)
     }
 
     console.log(recipes)
 
     return (
-        <div className='flex justify-center items-center'>
+        <div className='flex justify-center items-center mt-4'>
             <div className='w-2/3'>
-                <SearchBar onSearch={handleSearch} />
+                <SearchBar onSearch={handleSearch} placeholder={"Search Saved"} />
                 {recipes.length > 0 ?
                     <RecipeGrid recipes={recipes} />
                 :

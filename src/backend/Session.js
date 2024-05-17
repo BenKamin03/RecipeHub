@@ -107,26 +107,26 @@ const getProfile = (username) => {
             1, 2, 3, 4, 5, 6, 7
         ],
         following: [
-            "User46", 
+            "User46",
             "bakamin"
         ], //usernames
         followers: [
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
-            "bakamin", 
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
+            "bakamin",
         ], //usernames
         saved: [
             12,
@@ -142,107 +142,109 @@ const toggleFollow = (user, functions) => {
 }
 
 const browseRecipes = (queries) => {
-    return [
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-        {
-            name: "Tri-Tip Steak",
-            href: "",
-            img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
-            description:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
-            cuisine: "American",
-            tags: ["Steak", "Tri-Tip Steak", "Garlic"],
-        },
-    ]
+    return {
+        recipes: [
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+            {
+                name: "Tri-Tip Steak",
+                href: "",
+                img: "https://biteswithbri.com/wp-content/uploads/2021/02/HamburgerPattyRecipe04.jpg",
+                description:
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially",
+                cuisine: "American",
+                tags: ["Steak", "Tri-Tip Steak", "Garlic"],
+            },
+        ], maxPages: 10
+    }
 }
 
 const removeRecipe = (recipe) => {
@@ -278,6 +280,26 @@ const searchSaved = (query) => {
     // recipe => {return showcase != null && !showcase.some(showcasedRecipe => showcasedRecipe != null && showcasedRecipe.id === recipe.id)
 }
 
+const getProfiles = (search, page) => {
+    const length = 24;
+    return {
+        profiles: Array.from({ length }, () =>
+            Math.floor(Math.random() * (100 - 1 + 1)) + 1
+        ).map((id, index) => getProfile(`User${id}`)).filter((profile) =>
+            `${profile.username}`.toLowerCase().includes(search)
+        ).sort((a, b) => {
+            if (a.allRecipes.length === b.allRecipes.length) {
+                return a.username.localeCompare(b.username);
+            }
+            return b.allRecipes.length - a.allRecipes.length;
+        }), maxPages: 10
+    };
+}
+
+const toggleSaved = (recipeID) => {
+    alert(recipeID)
+}
+
 export default {
     isLoggedIn: isLoggedIn,
     redirectTo: redirectTo,
@@ -297,5 +319,7 @@ export default {
     updateProfile: updateProfile,
     removeRecipe: removeRecipe,
     handleChangePassword: handleChangePassword,
-    searchSaved: searchSaved
+    searchSaved: searchSaved,
+    getProfiles: getProfiles,
+    toggleSaved: toggleSaved,
 };
