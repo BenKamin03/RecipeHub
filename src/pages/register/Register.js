@@ -3,11 +3,11 @@ import Session from '../../middleware/Session'
 
 const Register = () => {
 
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
+    const handleNameChange = (event) => {
+        setName(event.target.value);
     };
 
     const handlePasswordChange = (event) => {
@@ -24,12 +24,12 @@ const Register = () => {
                 className='w-1/2 flex-col h-full justify-center content-center'
                 onSubmit={(e) => {
                     e.preventDefault()
-                    Session.register(e, { username: username, password: password })
+                    Session.register(e, { name: name, password: password })
                 }}
             >
                 <h1 className='text-center font-semibold text-3xl'>Register</h1>
-                <input required onChange={handleUsernameChange} type='email' id='email' placeholder='Email' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
-                <input required onChange={handleUsernameChange} type='text' id='username' placeholder='Username' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
+                <input required onChange={handleNameChange} type='email' id='email' placeholder='Email' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
+                <input required onChange={handleNameChange} type='text' id='name' placeholder='Name' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <input required onChange={handlePasswordChange} type='password' id='password' placeholder='Password' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <div className='flex justify-center content-center mt-4'>
                     <div className='grid grid-cols-2 w-1/2 gap-3'>

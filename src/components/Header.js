@@ -28,8 +28,8 @@ const Header = () => {
 	return (
 		<header className="sticky z-50 top-0 px-24 bg-white items-center justify-center">
 			<div className="border-b-2 border-gray-100 grid grid-cols-3  p-4">
-				<div onClick={(e) => Session.redirectTo(e, "/")} className="flex items-center cursor-pointer">
-					<img className="h-10 w-min mr-4" src="/recipehub/logo.png" alt="Logo" />
+				<div className="flex items-center">
+					<img className="h-10 w-min mr-4 cursor-pointer" src="/recipehub/logo.png" alt="Logo" onClick={(e) => Session.redirectTo(e, "/")} />
 				</div>
 				<div className="hidden md:flex text-black items-center justify-center gap-8">
 					{navOptions.map((nav, index) => (

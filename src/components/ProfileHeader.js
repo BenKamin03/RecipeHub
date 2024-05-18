@@ -8,18 +8,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ProfileHeader = () => {
 
     const [isOpen, setIsOpen] = useState(false);
-    const [username, setUsername] = useState(Session.isLoggedIn() ? Session.getSessionData().username : "Logged Out");
+    const [name, setName] = useState(Session.isLoggedIn() ? Session.getSessionData().name : "Logged Out");
     const [profile, setProfile] = useState(Session.getProfile(null));
     const dropdownRef = useRef(null);
 
     Session.addSessionListener(() => {
         if (Session.getSessionData()) {
-            let user = Session.getSessionData().username;
+            let user = Session.getSessionData().name;
             if (user !== null) {
-                setUsername(user)
+                setName(user)
             }
         } else
-            setUsername("Undefined")
+            setName("Undefined")
     })
 
     const toggleMenu = () => {
@@ -40,14 +40,14 @@ const ProfileHeader = () => {
     }, []);
 
     useEffect(() => {
-        setProfile(Session.getProfile(username));
-    }, [username])
+        setProfile(Session.getProfile(name));
+    }, [name])
 
 
 
     return (
         <div className='flex flex-row h-full justify-center content-center'>
-            <a href={`/profile?name=${username}`} className='flex flex-row justify-center content-center h-10'>
+            <a href={`/profile?name=${name}`} className='flex flex-row justify-center content-center h-10'>
                 <div className='bg-black aspect-square h-full rounded-full'>
                     <img
                         src={profile.img}
@@ -55,7 +55,7 @@ const ProfileHeader = () => {
                         alt="Profile"
                     />
                 </div>
-                {username !== null && <h1 className='align-middle p-2'>{username}</h1>}
+                {name !== null && <h1 className='align-middle p-2'>{name}</h1>}
             </a>
             <button onClick={(e) => toggleMenu()} ref={dropdownRef}>
                 <FontAwesomeIcon className="ml-6 p-2" icon={faCaretDown} />
@@ -70,7 +70,7 @@ const ProfileHeader = () => {
                     <div className="py-1" role="none">
                         <button
                             onClick={(e) => {
-                                Session.redirectTo(e, `/profile?name=${username}`)
+                                Session.redirectTo(e, `/profile?name=${name}`)
                             }}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                             role="menuitem"

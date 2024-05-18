@@ -29,7 +29,7 @@ const Settings = () => {
         }
 
         if (Session.handleChangePassword(e, { prevPassword: prevPassword, password: password })) {
-            Session.redirectTo(e, `/profile?name=${Session.getSessionData().username}`)
+            Session.redirectTo(e, `/profile?name=${Session.getSessionData().name}`)
         }
     }
 

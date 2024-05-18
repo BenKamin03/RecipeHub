@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import { faCircle, faClock } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import Session from "../middleware/Session";
 
 const RecipeRowItem = ({ recipe }) => {
 	const [visible, setVisible] = useState(false);
+
+	const [profilePic, setProfilePic] = useState("");
+
+	useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setProfilePic(await Session.getProfile(recipe.author).img);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
 	return (
 		<div
 			className="hover:scale-110 transition ease-in-out cursor-pointer"
 			onClick={(e) => {
 				e.stopPropagation();
-				window.location.href = "/recipe?id=" + recipe.id;
+				window.location.href = "/recipe?id=" + recipe._id;
 			}}
 			onMouseOver={(e) => setVisible(true)}
 			onMouseLeave={(e) => setVisible(false)}>
@@ -26,6 +43,18 @@ const RecipeRowItem = ({ recipe }) => {
 					}>
 					{visible && (
 						<div>
+							<div className='flex flex-row h-min justify-center content-center my-2'>
+								<a href={`/profile?name=${recipe.author}`} className='flex flex-row justify-center content-center text-white'>
+									<div className='bg-black aspect-square h-10 rounded-full'>
+										<img
+											src={profilePic}
+											className="h-full w-full rounded-full mr-4 object-center object-cover bg-black"
+											alt="Profile"
+										/>
+									</div>
+									<h1 className='align-middle p-2'>{recipe.author}</h1>
+								</a>
+							</div>
 							<p className="text-center text-white mx-4 line-clamp-1 font-bold">{recipe.name}</p>
 							<p className="text-white line-clamp-5 mx-2 text-center">{recipe.description}</p>
 							{recipe.tags != null && <p className="text-center text-white opacity-50 mx-4 line-clamp-1 font-light text-sm">
@@ -33,6 +62,17 @@ const RecipeRowItem = ({ recipe }) => {
 									<label className="mr-2" key={index}>#{tag}</label>
 								))}
 							</p>}
+							<div className="flex flex-row justify-center content-center text-white opacity-75">
+								<p className="text-center">
+									<FontAwesomeIcon className="mr-2" icon={faClock} />{recipe.cookTime}
+								</p>
+
+								<div className="w-2 h-2 rounded-full bg-white m-2" />
+
+								<p className="text-center">
+									{recipe.servings} Serving{recipe.servings > 1 && "s"}
+								</p>
+							</div>
 						</div>
 					)}
 				</div>

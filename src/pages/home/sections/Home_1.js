@@ -9,6 +9,23 @@ const Home_1 = () => {
 
 	const [cuisines, setCuisines] = useState([]);
 
+	const [randomRecipe, setRandomRecipe] = useState("");
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await Session.getRandomRecipeID();
+				console.log(response)
+				setRandomRecipe(response);
+				console.log(randomRecipe)
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+	}, []);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -32,15 +49,9 @@ const Home_1 = () => {
 						Explore our huge selection of delicious recipe ideas including: easy deserts, delicious vegan and vegetarian dinner
 						ideas, gorgeous pasta recipes, quick bakes, family-friendly meals and gluten-free recipes
 					</p>
-					<div className="flex gap-4 w-2/3">
-						<Button textColor={"white"} href="/browse?order=rating" name="Top Rated" mainColor="black" borderColor="black" />
-						<div
-							onClick={(e) => {
-								Session.redirectTo(e, `/recipe?id=${Session.getRandomRecipeID()}`)
-							}}
-							className={`cursor-pointer bg-white border-gray-300 text-black border-2 flex justify-center items-center rounded-md w-full h-12 hover:border-gray-300 hover:bg-gray-300 hover:scale-110 transition-all ease-in-out`}>
-							Show Random
-						</div>
+					<div className="flex gap-4 w-1/2">
+						<Button textColor={"white"} href={`/recipe?id=${randomRecipe}`} name="I'm Feeling Lucky" mainColor="black" borderColor="black" />
+						
 					</div>
 				</div>
 			</div>

@@ -2,6 +2,7 @@ import React from "react";
 
 import Home1 from "./sections/Home_1";
 import Home2 from "./sections/Home_2.js";
+import LoadingPage from "../../components/Loading.js";
 
 const Home = () => {
 	return (

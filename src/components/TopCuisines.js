@@ -37,7 +37,7 @@ const TopCuisines = ({ allRecipes, max }) => {
 			}
 		};
 		fetchData();
-	}, []);
+	}, [allRecipes]);
 
 	const getGrayScaleValue = (color) => {
 		

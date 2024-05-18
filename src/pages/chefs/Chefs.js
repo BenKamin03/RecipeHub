@@ -4,6 +4,7 @@ import Session from '../../middleware/Session'
 import SearchBar from '../../components/SearchBar';
 import { faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import LoadingPage from '../../components/Loading';
 
 const Chefs = () => {
 
@@ -14,6 +15,7 @@ const Chefs = () => {
     const [isLeftDisabled, setIsLeftDisabled] = useState(true);
     const [isRightDisabled, setIsRightDisabled] = useState(true);
     const [maxPages, setMaxPages] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,6 +26,8 @@ const Chefs = () => {
                 setMaxPages(response.maxPages);
                 setIsLeftDisabled(pageNumber == 1);
                 setIsRightDisabled(pageNumber >= maxPages);
+
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -48,7 +52,7 @@ const Chefs = () => {
 
     const onSearch = (e, searchQuery) => {
         if (searchQuery && searchQuery != "") {
-            Session.redirectTo(e, `/chefs?search=${searchQuery}`)
+            Session.redirectTo(e, `/chefs?name=${searchQuery}`)
         } else {
             Session.redirectTo(e, `/chefs`);
         }
@@ -60,7 +64,7 @@ const Chefs = () => {
         const newQueries = {};
 
         if (search && search != "") {
-            newQueries.search = search;
+            newQueries.name = search;
         }
 
         if (page && (page = Math.min(Math.max(page, 1), maxPages)) != 1) {
@@ -83,23 +87,26 @@ const Chefs = () => {
     return (
         <div className='mx-24 flex justify-center items-center flex-col mt-4'>
 
-            <SearchBar onSearch={onSearch} placeholder={"Search Chefs"} />
-            {convertToDoubleArray(profiles, 3).map((ps, index) => (
+            <SearchBar onSearch={onSearch} placeholder={"Search Chefs"} searchQuery={"name"} />
+            {profiles !== null ? convertToDoubleArray(profiles, 3).map((ps, index) => (
                 <div className={`grid grid-cols-${ps.length} gap-4 my-2 w-${ps.length == 3 ? "full" : "2/3"}`} key={index}>
                     {ps.map((p, i) => (
                         <ChefCard profile={p} key={i} />
                     ))}
                 </div>
-            ))}
+            ))
+                :
+                <LoadingPage />
+            }
             <div className='flex justify-center mt-4'>
                 <div className='flex flex-row gap-2'>
                     <button disabled={isLeftDisabled} onClick={(e) => {
-                        Session.redirectTo(e, getRedirector(queries.search, pageNumber - 10));
+                        Session.redirectTo(e, getRedirector(queries.name, pageNumber - 10));
                     }} className={`px-4 py-2 rounded-lg ${isLeftDisabled ? "bg-neutral-300" : "bg-black hover:bg-neutral-800 hover:scale-105"} transition-all ease-in-out text-white`}>
                         <FontAwesomeIcon icon={faAngleDoubleLeft} />
                     </button>
                     <button disabled={isLeftDisabled} onClick={(e) => {
-                        Session.redirectTo(e, getRedirector(queries.search, pageNumber - 1));
+                        Session.redirectTo(e, getRedirector(queries.name, pageNumber - 1));
                     }} className={`px-4 py-2 rounded-lg ${isLeftDisabled ? "bg-neutral-300" : "bg-black hover:bg-neutral-800 hover:scale-105"} transition-all ease-in-out text-white`}>
                         <FontAwesomeIcon icon={faAngleLeft} />
                     </button>
@@ -107,12 +114,12 @@ const Chefs = () => {
                         {pageNumber}
                     </p>
                     <button disabled={isRightDisabled} onClick={(e) => {
-                        Session.redirectTo(e, getRedirector(queries.search, pageNumber + 1));
+                        Session.redirectTo(e, getRedirector(queries.name, pageNumber + 1));
                     }} className={`px-4 py-2 rounded-lg ${isRightDisabled ? "bg-neutral-300" : "bg-black hover:bg-neutral-800 hover:scale-105"} transition-all ease-in-out text-white`}>
                         <FontAwesomeIcon icon={faAngleRight} />
                     </button>
                     <button disabled={isRightDisabled} onClick={(e) => {
-                        Session.redirectTo(e, getRedirector(queries.search, pageNumber + 10));
+                        Session.redirectTo(e, getRedirector(queries.name, pageNumber + 10));
                     }} className={`px-4 py-2 rounded-lg ${isRightDisabled ? "bg-neutral-300" : "bg-black hover:bg-neutral-800 hover:scale-105"} transition-all ease-in-out text-white`}>
                         <FontAwesomeIcon icon={faAngleDoubleRight} />
                     </button>

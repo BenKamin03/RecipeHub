@@ -4,7 +4,7 @@ import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Session from '../middleware/Session';
 
-const SearchBar = ({ placeholder, filterOptions, onSearch }) => {
+const SearchBar = ({ placeholder, filterOptions, onSearch, searchQuery }) => {
     const handleSearch = (e) => {
         const searchTerm = e.target.value;
         if (onSearch !== null)
@@ -13,7 +13,7 @@ const SearchBar = ({ placeholder, filterOptions, onSearch }) => {
 
     const queries = Session.getQueries();
 
-    const [search, setSearch] = useState(queries.search || "");
+    const [search, setSearch] = useState(queries[searchQuery || "search"] || "");
 
 
     return (

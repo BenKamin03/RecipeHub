@@ -12,7 +12,7 @@ app.use(cors());
 app.get('/api/RecipeHub/GetUsers', async (req, res) => {
   try {
     // Access the MongoDB database
-    await api.getAllUsers(res);
+    await api.getAllUsers(res, req.query);
 
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -20,16 +20,48 @@ app.get('/api/RecipeHub/GetUsers', async (req, res) => {
   }
 });
 
-app.get('/api/RecipeHub/GetRecipes', async (req, res) => {
+app.get('/api/RecipeHub/GetUser', async (req, res) => {
   try {
     // Access the MongoDB database
-    await api.getAllRecipes(res);
+    console.log(req.query.name);
+    await api.getUser(res, req.query.name || "");
 
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send("Internal Server Error");
   }
 })
+
+app.get('/api/RecipeHub/GetRecipes', async (req, res) => {
+  try {
+    // Access the MongoDB database
+    await api.getAllRecipes(res, req.query);
+
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.get('/api/RecipeHub/GetRecipe', async (req, res) => {
+  try {
+    // Access the MongoDB database
+    await api.getRecipe(res, req.query.id);
+
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.get('/api/RecipeHub/RandomRecipe', async (req, res) => {
+  try {
+    await api.getRandomRecipe(res)
+  } catch (error) {
+    console.error('Error fetching random recipe:', error);
+    res.status(500).json({ error: 'Failed to fetch random recipe' });
+  }
+});
 
 app.post('/api/RecipeHub/CreateUser', multer().none(), async (req, res) => {
   try {
@@ -38,7 +70,7 @@ app.post('/api/RecipeHub/CreateUser', multer().none(), async (req, res) => {
     console.error('Error creating user:', error);
     res.status(500).send("Internal Server Error");
   }
-}) 
+})
 
 
 function start(PORT) {

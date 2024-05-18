@@ -11,19 +11,36 @@ const Browse = () => {
 
     const [isCuisine, setIsCuisine] = useState(false);
     const [isHoveringCuisine, setIsHoveringCuisine] = useState(false)
+    const [recipes, setRecipes] = useState([]);
+    const [maxPages, setMaxPages] = useState(0);
+    const [isLeftDisabled, setIsLeftDisabled] = useState(true);
+    const [isRightDisabled, setIsRightDisabled] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // recipes = Session.browseRecipes();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Session.browseRecipes();
+                setRecipes(response.recipes);
+                console.log(response.recipes);
+                setMaxPages(response.maxPages);
+
+                setIsLeftDisabled(pageNumber == 1);
+                setIsRightDisabled(pageNumber >= maxPages);
+
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     const queries = Session.getQueries();
     const pageNumber = parseInt(queries.page || 1);
 
-    const browse = Session.browseRecipes(queries);
-
-    const recipes = browse.recipes;
-    const maxPages = browse.maxPages;
-
-    const isLeftDisabled = pageNumber == 1;
-    const isRightDisabled = pageNumber >= maxPages;
 
     const [cuisine, setCuisine] = useState(queries.cuisine ? queries.cuisine.cuisine : "");
     const [search, setSearch] = useState(queries.search || "");
@@ -89,6 +106,7 @@ const Browse = () => {
 
     return (
         <div className='flex justify-center items-center'>
+
             <div className='w-2/3 mt-4'>
                 {isCuisine && (
                     <div className="transition ease-in-out relative rounded-3xl h-32" onMouseEnter={(e) => setIsHoveringCuisine(true)} onMouseLeave={(e) => setIsHoveringCuisine(false)}>
@@ -144,6 +162,7 @@ const Browse = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
