@@ -1,7 +1,7 @@
 import React from 'react'
 
 import TopCuisines from './TopCuisines'
-import Session from '../backend/Session'
+import Session from '../middleware/Session'
 
 const ChefCard = ({ profile }) => {
     let rating = 0;
@@ -15,7 +15,6 @@ const ChefCard = ({ profile }) => {
      })
 
      rating = Math.round(rating / length * 100) / 100
-     console.log(rating);
 
     return (
         <div onClick={(e) => Session.redirectTo(e, `/profile?name=${profile.username}`)} className='cursor-pointer bg-gray-200 rounded-lg p-4 flex flex-row gap-4 transition-all ease-in-out hover:scale-110 hover:bg-gray-300'>

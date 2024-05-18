@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Session from '../backend/Session';
+import Session from '../middleware/Session';
 
 const SearchBar = ({ placeholder, filterOptions, onSearch }) => {
     const handleSearch = (e) => {

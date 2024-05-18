@@ -3,7 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import Button from "../../../components/Button.js";
-import Session from "../../../backend/Session.js";
+import Session from "../../../middleware/Session.js";
 
 const Home_1 = () => {
 
@@ -46,9 +46,9 @@ const Home_1 = () => {
 			</div>
 
 
-						<img
-							src="https://assets-global.website-files.com/64d8e1941fab27b22290703e/65157cf16020f5e6e4109c39_baby-egg-roll.png"
-							className="h-full w-full rounded-md mr-4 object-center object-contain col-span-2 aspect-square" />
+			<img
+				src="https://assets-global.website-files.com/64d8e1941fab27b22290703e/65157cf16020f5e6e4109c39_baby-egg-roll.png"
+				className="h-full w-full rounded-md mr-4 object-center object-contain col-span-2 aspect-square" />
 
 
 

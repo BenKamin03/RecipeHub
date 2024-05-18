@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { faPlus, faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Session from "../../backend/Session";
+import Session from "../../middleware/Session";
 
 const Submit = () => {
 

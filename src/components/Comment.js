@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Session from '../backend/Session'
+import Session from '../middleware/Session'
 
 const Comment = ({ comment }) => {
     return (

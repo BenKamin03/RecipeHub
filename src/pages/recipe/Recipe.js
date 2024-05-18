@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Session from '../../backend/Session'
+import Session from '../../middleware/Session'
 import Ingredient from '../../components/Ingredient';
 import Comment from '../../components/Comment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,7 +1,7 @@
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 
 const EditShowcaseCard = ({ showcase, recipe, setSelectionIndex, selectionIndex, isSelecting, setIsSelecting, index, setShowcase, isEmpty }) => {
     const [visible, setVisible] = useState(false);

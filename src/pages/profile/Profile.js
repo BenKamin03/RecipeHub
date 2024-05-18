@@ -5,7 +5,7 @@ import RecipeRow from "../../components/RecipeRow.js";
 import PieChart from "../../components/PieChart.js";
 import TopCuisines from "../../components/TopCuisines.js";
 import RecipeGrid from "../../components/RecipeGrid.js";
-import Session from "../../backend/Session.js";
+import Session from "../../middleware/Session.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus, faUserMinus, faEdit, faCog, faSign, faSignIn, faRegistered, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 

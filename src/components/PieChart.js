@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Chart from "chart.js/auto";
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 
 const PieChart = ({ allRecipes }) => {
 	const chartRef = useRef(null);

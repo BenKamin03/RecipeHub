@@ -12,7 +12,7 @@ import Cuisines from "./pages/cuisines/Cuisines";
 import Footer from "./components/Footer";
 import Login from "./pages/login/Login";
 import { useState } from "react";
-import Session from "./backend/Session";
+import Session from "./middleware/Session";
 import Following from "./pages/following/Following";
 import Register from "./pages/register/Register";
 import EditProfile from "./pages/edit/EditProfile";

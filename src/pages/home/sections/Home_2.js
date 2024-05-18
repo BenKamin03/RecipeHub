@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Cuisines from "../../../components/ExploreByCuisine.js";
 import RecipeRow from "../../../components/RecipeRow.js";
-import Session from "../../../backend/Session.js";
+import Session from "../../../middleware/Session.js";
 
 const Home_2 = () => {
 	const trendingRecipes = [

@@ -1,5 +1,5 @@
 import React from "react";
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 
 const Button = ({ name, href, mainColor, borderColor, textColor }) => {
 	return (

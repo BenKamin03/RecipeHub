@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import RecipeGrid from '../../components/RecipeGrid'
 
 import SearchBar from '../../components/SearchBar';
-import Session from '../../backend/Session';
+import Session from '../../middleware/Session';
 
 const Saved = () => {
 

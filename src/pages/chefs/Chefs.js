@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ChefCard from '../../components/ChefCard'
-import Session from '../../backend/Session'
+import Session from '../../middleware/Session'
 import SearchBar from '../../components/SearchBar';
 import { faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,13 +10,28 @@ const Chefs = () => {
     const queries = Session.getQueries();
     const pageNumber = parseInt(queries.page || 1);
 
-    const profilesReturn = Session.getProfiles(queries.search || "");
+    const [profiles, setProfiles] = useState([]);
+    const [isLeftDisabled, setIsLeftDisabled] = useState(true);
+    const [isRightDisabled, setIsRightDisabled] = useState(true);
+    const [maxPages, setMaxPages] = useState(0);
 
-    const profiles = profilesReturn.profiles;
-    const maxPages = profilesReturn.maxPages;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Session.getProfiles();
+                setProfiles(response.profiles);
 
-    const isLeftDisabled = pageNumber == 1;
-    const isRightDisabled = pageNumber >= maxPages;
+                setMaxPages(response.maxPages);
+                setIsLeftDisabled(pageNumber == 1);
+                setIsRightDisabled(pageNumber >= maxPages);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     const convertToDoubleArray = (array, rowSize) => {
         const doubleArray = [];

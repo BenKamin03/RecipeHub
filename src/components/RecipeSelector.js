@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 
 const RecipeRowItem = ({ recipe, selectRecipe }) => {
 	const [visible, setVisible] = useState(false);

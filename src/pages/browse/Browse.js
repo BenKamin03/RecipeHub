@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import RecipeGrid from '../../components/RecipeGrid'
 
 import SearchBar from '../../components/SearchBar';
-import Session from '../../backend/Session';
+import Session from '../../middleware/Session';
 import CuisinesSearchOptions from '../../components/CuisinesSearchOptions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight, faCaretLeft, faCaretRight, faTimes } from '@fortawesome/free-solid-svg-icons';

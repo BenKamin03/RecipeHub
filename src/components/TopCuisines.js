@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 
 const TopCuisines = ({ allRecipes, max }) => {
 	const [data, setData] = useState([]);

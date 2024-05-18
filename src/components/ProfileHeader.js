@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

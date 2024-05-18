@@ -1,4 +1,5 @@
 const updateSession = [];
+const APIURL = 'http://localhost:5038/api/RecipeHub/'
 
 const addSessionListener = (func) => {
     updateSession.push(func);
@@ -280,27 +281,23 @@ const searchSaved = (query) => {
     // recipe => {return showcase != null && !showcase.some(showcasedRecipe => showcasedRecipe != null && showcasedRecipe.id === recipe.id)
 }
 
-const getProfiles = (search, page) => {
-    const length = 24;
-    return {
-        profiles: Array.from({ length }, () =>
-            Math.floor(Math.random() * (100 - 1 + 1)) + 1
-        ).map((id, index) => getProfile(`User${id}`)).filter((profile) =>
-            `${profile.username}`.toLowerCase().includes(search)
-        ).sort((a, b) => {
-            if (a.allRecipes.length === b.allRecipes.length) {
-                return a.username.localeCompare(b.username);
-            }
-            return b.allRecipes.length - a.allRecipes.length;
-        }), maxPages: 10
-    };
+const getProfiles = async (search, page) => {
+    try {
+        const response = await fetch("http://localhost:5038/api/RecipeHub/GetUsers");
+        const data = await response.json();
+        return { maxPages: data.length, profiles: data };
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        return { maxPages: 0, profiles: [] }; // Return empty data or handle error as needed
+    }
 }
+
 
 const toggleSaved = (recipeID) => {
     alert(recipeID)
 }
 
-export default {
+module.exports = {
     isLoggedIn: isLoggedIn,
     redirectTo: redirectTo,
     logOut: logOut,

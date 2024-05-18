@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Session from '../../backend/Session';
+import Session from '../../middleware/Session';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 

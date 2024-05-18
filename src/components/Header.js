@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Session from "../backend/Session";
+import Session from "../middleware/Session";
 import ProfileHeader from "./ProfileHeader";
 
 const Header = () => {
