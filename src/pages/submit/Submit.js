@@ -18,6 +18,8 @@ const Submit = () => {
 	const [instruction, setInstructions] = useState("");
 	const [tags, setTags] = useState([]);
 	const [tagsText, setTagsText] = useState("")
+	const [servings, setServings] = useState(0);
+	const [time, setTime] = useState();
 
 	const handleFileChange = (event) => {
 		const selectedFile = event.target.files[0];
@@ -70,6 +72,10 @@ const Submit = () => {
 			alert("Title is Empty")
 		} else if (description === "") {
 			alert("Description is Empty")
+		} else if (servings == 0) {
+			alert("Servings Can't Be 0")
+		} else if (time == 0) {
+			alert("Time Can't Be 0")
 		} else if (ingredients.length === 1 && ingredients[0] === "") {
 			alert("Ingredients are Empty")
 		} else if (instruction === "") {
@@ -77,7 +83,7 @@ const Submit = () => {
 		} else if (file === null) {
 			alert("No File Submitted")
 		} else {
-			Session.submitRecipe(e, { file: file, tags: tags, description: description, title: title, ingredients: ingredients, instruction: instruction })
+			Session.submitRecipe(e, { cookTime: time, servings: servings, file: file, tags: tags, description: description, title: title, ingredients: ingredients, instruction: instruction })
 		}
 	}
 
@@ -109,6 +115,25 @@ const Submit = () => {
 					className="text-center w-2/3 py-2 border-2 border-black rounded-lg"
 					placeholder="#RecipeTags"
 				/>
+				<div className="flex flex-row w-2/3 gap-2">
+					<input
+						type="number"
+						name="Servings"
+						min={0}
+						value={servings != 0 ? servings : ""}
+						onChange={(event) => setServings(event.target.value)}
+						className="text-center w-1/2 py-2 border-2 border-black rounded-lg"
+						placeholder="Servings"
+					/>
+					<input
+						type="number"
+						name="Time"
+						value={time}
+						onChange={(event) => setTime(event.target.value)}
+						className="text-center w-1/2 py-2 border-2 border-black rounded-lg"
+						placeholder="Time to Cook (Minutes)"
+					/>
+				</div>
 				<div className="grid grid-cols-2 gap-0 w-2/3 pt-1">
 					<label htmlFor="RecipeImage" className="pr-2 border-r-2">
 						<div className="mb-5 cursor-pointer">

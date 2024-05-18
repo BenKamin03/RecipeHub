@@ -7,6 +7,7 @@ const api = require('./api.js');
 
 const app = Express();
 app.use(cors());
+app.use(Express.json())
 
 // Define routes
 app.get('/api/RecipeHub/GetUsers', async (req, res) => {
@@ -63,9 +64,19 @@ app.get('/api/RecipeHub/RandomRecipe', async (req, res) => {
   }
 });
 
-app.post('/api/RecipeHub/CreateUser', multer().none(), async (req, res) => {
+app.post('/api/RecipeHub/CreateUser', async (req, res) => {
   try {
-    await api.createUser(req.post);
+    await api.createUser(res, req.body);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/LogIn', async (req, res) => {
+  try {
+    console.log(req.body)
+    await api.logIn(res, req.body)
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).send("Internal Server Error");

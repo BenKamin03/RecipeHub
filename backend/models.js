@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
 
 // Define Schema for Recipes
 const recipeSchema = new mongoose.Schema({
@@ -18,6 +19,7 @@ const recipeSchema = new mongoose.Schema({
 // Define Schema for Users
 const userSchema = new mongoose.Schema({
     name: { type: String, unique: true },
+    password: String,
     bio: String,
     img: String, // Assuming the image is stored as a URL or file path
     showcase: [String], // Array of recipe IDs for showcase

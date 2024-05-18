@@ -23,7 +23,7 @@ const Login = () => {
             <form className='w-1/2 flex-col h-full justify-center content-center'
                 onSubmit={(e) => {
                     e.preventDefault();
-                    Session.logIn(e, { name })
+                    Session.logIn(e, { name, password })
                 }}>
                 <h1 className='text-center font-semibold text-3xl'>Log In</h1>
                 <input required onChange={handleNameChange} type='text' id='name' placeholder='Name or Email' className='py-2 my-1 w-full border-2 rounded-lg text-center' />

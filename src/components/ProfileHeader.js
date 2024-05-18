@@ -9,8 +9,11 @@ const ProfileHeader = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState(Session.isLoggedIn() ? Session.getSessionData().name : "Logged Out");
+    const [pfp, setPFP] = useState(Session.isLoggedIn() ? Session.getSessionData().img : "/favicon.ico");
     const [profile, setProfile] = useState(Session.getProfile(null));
     const dropdownRef = useRef(null);
+
+    console.log(Session.getSessionData())
 
     Session.addSessionListener(() => {
         if (Session.getSessionData()) {
@@ -50,7 +53,7 @@ const ProfileHeader = () => {
             <a href={`/profile?name=${name}`} className='flex flex-row justify-center content-center h-10'>
                 <div className='bg-black aspect-square h-full rounded-full'>
                     <img
-                        src={profile.img}
+                        src={pfp}
                         className="h-full w-full rounded-full mr-4 object-center object-cover bg-black"
                         alt="Profile"
                     />

@@ -18,6 +18,23 @@ const getQueries = (queries) => {
     return query
 }
 
+async function logIn(res, userData) {
+    connectDB()
+        .then(async () => {
+            const user = await User.findOne(userData);
+            console.log(user)
+            if (user !== null) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).send("Not Found");
+            }
+        })
+        .catch(error => {
+            console.error('Error connecting to the database:', error);
+            res.json([]);
+        });
+}
+
 // Function to get all recipes
 async function getAllRecipes(res, queries) {
 
@@ -30,7 +47,7 @@ async function getAllRecipes(res, queries) {
             const pageNumber = (queries.page || 1) - 1;
 
             console.log('Recipes:', recipes);
-            res.json({maxPages: recipes.length / countPerPage, recipes: recipes.slice((pageNumber * countPerPage), (pageNumber + 1) * countPerPage)});
+            res.json({ maxPages: recipes.length / countPerPage, recipes: recipes.slice((pageNumber * countPerPage), (pageNumber + 1) * countPerPage) });
         })
         .catch(error => {
             console.error('Error connecting to the database:', error);
@@ -98,14 +115,14 @@ async function getRecipe(res, id) {
 }
 
 // Function to create a new user
-async function createUser(userData) {
+async function createUser(res, userData) {
     try {
         const newUser = await User.create(userData);
         console.log('User created successfully:', newUser);
-        return newUser;
+        res.send("Success");
     } catch (error) {
         console.error('Error creating user:', error);
-        return null;
+        res.status(404).send("Error");
     }
 }
 
@@ -121,4 +138,5 @@ async function createRecipe(recipeData) {
     }
 }
 
-module.exports = { getAllRecipes, getAllUsers, getUser, getRecipe, getRandomRecipe, createUser };
+
+module.exports = { getAllRecipes, getAllUsers, getUser, getRecipe, getRandomRecipe, createUser, logIn };

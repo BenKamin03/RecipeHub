@@ -26,7 +26,7 @@ const EditProfile = () => {
         const response = await Session.getProfile(Session.getSessionData().name);
 
         setFile(response.img);
-        setDescription(response.description)
+        setDescription(response.bio)
         setShowcase(response.showcase.map((recipe) => recipe == "null" ? null : recipe));
 
 

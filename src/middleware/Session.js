@@ -1,5 +1,6 @@
 const updateSession = [];
 const APIURL = 'http://localhost:5038/api/RecipeHub/'
+// const bcrypt = require('bcrypt')
 
 const addSessionListener = (func) => {
     updateSession.push(func);
@@ -41,9 +42,57 @@ const logOut = (e) => {
     redirectTo(e, "/")
 }
 
-const logIn = (e, userData) => {
-    setSessionData(userData);
-    redirectTo(e, "/")
+// const hashPassword = async (password) => {
+//     try {
+//         const salt = await bcrypt.genSalt(10);
+//         const hashedPassword = await bcrypt.hash(password, salt);
+//         return hashedPassword;
+//     } catch (error) {
+//         console.error('Error hashing password:', error);
+//     }
+// };
+
+// const comparePassword = async (password, hashedPassword) => {
+//     try {
+//         const match = await bcrypt.compare(password, hashedPassword);
+//         return match;
+//     } catch (error) {
+//         console.error('Error comparing password:', error);
+//     }
+// };
+
+function sha512(str) {
+    return crypto.subtle.digest("SHA-512", new TextEncoder("utf-8").encode(str)).then(buf => {
+        return Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
+    });
+}
+
+const logIn = async (e, userData) => {
+
+    userData.password = await sha512(userData.password);
+    const response = await fetch("http://localhost:5038/api/RecipeHub/LogIn", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    });
+
+    if (response.status == 200) {
+        const json = await response.json();
+
+        for (let i in json) {
+            if (i == "img")
+                userData.img = json[i];
+        }
+
+        setSessionData(userData);
+        redirectTo(e, "/")
+        return true;
+    } else {
+        alert("Incorrect Username or Password");
+        return false;
+    }
 }
 
 const getCuisines = async () => {
@@ -127,9 +176,31 @@ const removeRecipe = (recipe) => {
 
 }
 
-const register = (e, userData) => {
-    logIn(e, userData)
-    redirectTo(e, "/")
+const register = async (e, userData) => {
+
+    userData.showcase = ["null", "null", "null"];
+    userData.bio = "Default Description";
+    userData.img = "/images/globe.png"
+    userData.password = await sha512(userData.password)
+
+    const response = await fetch("http://localhost:5038/api/RecipeHub/CreateUser", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    })
+
+    if (response.status == 200) {
+
+        delete userData.showcase;
+        delete userData.description;
+
+        setSessionData(userData)
+        redirectTo(e, "/")
+    } else {
+        alert("Error")
+    }
 }
 
 const submitRecipe = (e, recipe) => {
@@ -165,6 +236,13 @@ const getProfiles = async (search, page) => {
     }
 }
 
+const addComment = (recipe, comment) => {
+
+}
+
+const deleteComment = (recipe, comment) => {
+
+}
 
 const toggleSaved = (recipeID) => {
     alert(recipeID)
@@ -192,4 +270,6 @@ module.exports = {
     searchSaved: searchSaved,
     getProfiles: getProfiles,
     toggleSaved: toggleSaved,
+    addComment,
+    deleteComment
 };
