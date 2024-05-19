@@ -28,7 +28,6 @@ const Register = () => {
                 }}
             >
                 <h1 className='text-center font-semibold text-3xl'>Register</h1>
-                <input required onChange={handleNameChange} type='email' id='email' placeholder='Email' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <input required onChange={handleNameChange} type='text' id='name' placeholder='Name' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <input required onChange={handlePasswordChange} type='password' id='password' placeholder='Password' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <div className='flex justify-center content-center mt-4'>

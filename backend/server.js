@@ -73,6 +73,24 @@ app.post('/api/RecipeHub/CreateUser', async (req, res) => {
   }
 })
 
+app.post('/api/RecipeHub/CreateRecipe', async (req, res) => {
+  try {
+    await api.createRecipe(res, req.body);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/RemoveRecipe', async (req, res) => {
+  try {
+    await api.removeRecipe(res, req.body);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
 app.post('/api/RecipeHub/LogIn', async (req, res) => {
   try {
     console.log(req.body)
@@ -83,6 +101,68 @@ app.post('/api/RecipeHub/LogIn', async (req, res) => {
   }
 })
 
+app.post('/api/RecipeHub/ToggleFollow', async (req, res) => {
+  try {
+    await api.toggleFollow(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/ToggleSaved', async (req, res) => {
+  try {
+    await api.toggleSaved(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/UpdateProfile', async (req, res) => {
+  try {
+    await api.updateProfile(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/AddComment', async (req, res) => {
+  try {
+    await api.addComment(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/RemoveComment', async (req, res) => {
+  try {
+    await api.removeComment(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/ChangePassword', async (req, res) => {
+  try {
+    await api.changePassword(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+app.post('/api/RecipeHub/RemoveAccount', async (req, res) => {
+  try {
+    await api.removeAccount(res, req.body)
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 function start(PORT) {
   app.listen(PORT, async () => {

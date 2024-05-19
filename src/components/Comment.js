@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
 import Session from '../middleware/Session'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, updateRecipe, recipe }) => {
 
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await Session.getProfiles();
+                const response = await Session.getProfile(comment.name);
                 setProfile(response);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -19,8 +21,13 @@ const Comment = ({ comment }) => {
         fetchData();
     }, []);
 
+    const removeComment = async () => {
+        await Session.deleteComment(recipe, comment);
+        updateRecipe();
+    }
+
     return (
-        <div className='border-2 p-2 rounded-lg my-4'>
+        <div className='border-2 p-2 rounded-lg my-4 relative'>
             {profile != null &&
                 <div className='flex flex-row h-min w-full justify-between p-4'>
                     <a href={`/profile?name=${profile.name}`} className='flex flex-row justify-center content-center'>
@@ -38,6 +45,9 @@ const Comment = ({ comment }) => {
             <p className='my-4 p-4'>
                 {comment.message}
             </p>
+            {comment.name == Session.getSessionData().name &&
+                <FontAwesomeIcon onClick={(e) => removeComment()} className='absolute bottom-4 right-4 text-2xl cursor-pointer transition-all ease-in-out hover:scale-105' icon={faTrash} />
+            }
         </div>
     )
 }

@@ -20,7 +20,7 @@ const Settings = () => {
         setConfirmPassword(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
@@ -28,9 +28,7 @@ const Settings = () => {
             return;
         }
 
-        if (Session.handleChangePassword(e, { prevPassword: prevPassword, password: password })) {
-            Session.redirectTo(e, `/profile?name=${Session.getSessionData().name}`)
-        }
+        await Session.handleChangePassword(e, { name: Session.getSessionData().name, password: prevPassword, newPassword: password })
     }
 
     return (
@@ -51,7 +49,11 @@ const Settings = () => {
                 <button
                     type="button"
                     onClick={(e) => {
-
+                        let p = window.prompt("Confirm Delete: Enter Password")
+                        console.log(p);
+                        if (p !== null && p !== "") {
+                            Session.removeUser(e, p);
+                        }
                     }}
                     className="text-white mt-1 w-full py-2 rounded bg-red-500 hover:bg-red-600 transition ease-in-out">
                     <FontAwesomeIcon icon={faTrash} className="mr-2" />

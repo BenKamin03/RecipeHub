@@ -20,7 +20,8 @@ const clearSessionData = () => {
 }
 
 const setSessionData = (data) => {
-    const sessionString = `session=${JSON.stringify(data)};`;
+    const json = JSON.stringify(data);
+    const sessionString = "session=" + json + ";";
     document.cookie = sessionString;
 }
 
@@ -41,25 +42,6 @@ const logOut = (e) => {
     clearSessionData();
     redirectTo(e, "/")
 }
-
-// const hashPassword = async (password) => {
-//     try {
-//         const salt = await bcrypt.genSalt(10);
-//         const hashedPassword = await bcrypt.hash(password, salt);
-//         return hashedPassword;
-//     } catch (error) {
-//         console.error('Error hashing password:', error);
-//     }
-// };
-
-// const comparePassword = async (password, hashedPassword) => {
-//     try {
-//         const match = await bcrypt.compare(password, hashedPassword);
-//         return match;
-//     } catch (error) {
-//         console.error('Error comparing password:', error);
-//     }
-// };
 
 function sha512(str) {
     return crypto.subtle.digest("SHA-512", new TextEncoder("utf-8").encode(str)).then(buf => {
@@ -137,8 +119,21 @@ const getRandomRecipeID = async () => {
     }
 }
 
-const updateProfile = (profile) => {
-
+const updateProfile = async (profile) => {
+    try {
+        const response = await fetch("http://localhost:5038/api/RecipeHub/UpdateProfile", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(profile)
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        return { maxPages: 0, profiles: [] }; // Return empty data or handle error as needed
+    }
 }
 
 const getProfile = async (name) => {
@@ -153,11 +148,38 @@ const getProfile = async (name) => {
     }
 }
 
-const toggleFollow = (user, functions) => {
+const toggleFollow = async (profile) => {
 
-    functions.map((func, index) => {
-        func();
+    const data = { profile: profile, user: getSessionData().name }
+
+    const response = await fetch("http://localhost:5038/api/RecipeHub/ToggleFollow", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
+
+    const d = await response.json()
+    console.log(d);
+    return d;
+}
+
+const toggleSaved = async (recipeID) => {
+
+    const data = { recipe: recipeID, user: getSessionData().name }
+
+    const response = await fetch("http://localhost:5038/api/RecipeHub/ToggleSaved", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+
+    const d = await response.json()
+    console.log(d);
+    return d;
 }
 
 const browseRecipes = async (queries) => {
@@ -172,8 +194,21 @@ const browseRecipes = async (queries) => {
     }
 }
 
-const removeRecipe = (recipe) => {
+const removeRecipe = async (recipe) => {
+    console.log(recipe);
+    const response = await fetch("http://localhost:5038/api/RecipeHub/RemoveRecipe", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipe)
+    })
 
+    if (response.status == 200) {
+        redirectTo(null, "/");
+    } else {
+        alert("failed");
+    }
 }
 
 const register = async (e, userData) => {
@@ -203,26 +238,90 @@ const register = async (e, userData) => {
     }
 }
 
-const submitRecipe = (e, recipe) => {
-    redirectTo(e, `/recipe?id=${"id"}`)
-}
+const submitRecipe = async (e, recipe) => {
 
-const handleChangePassword = (e, data) => {
-    return true;
-}
+    recipe.author = getSessionData().name;
+    // recipe.img = "/favicon.ico"
 
-const searchSaved = (query) => {
-    query = query.toLowerCase()
+    try {
+        const response = await fetch("http://localhost:5038/api/RecipeHub/CreateRecipe", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(recipe)
+        });
+        const data = await response.json();
 
-    const profile = getProfile(getSessionData().name)
-
-    return profile.saved.map((recipeID, index) => {
-        const recipe = getRecipeFromID(recipeID);
-        console.log(recipe.name + " " + query);
-        if (recipe.name.toLowerCase().includes(query)) {
-            return recipe;
+        if (data) {
+            console.log(`/recipe?id=${data.id}`);
+            redirectTo(e, `/recipe?id=${data.id}`)
         }
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        return { maxPages: 0, profiles: [] }; // Return empty data or handle error as needed
+    }
+
+
+}
+
+const handleChangePassword = async (e, data) => {
+    data.password = await sha512(data.password);
+    data.newPassword = await sha512(data.newPassword)
+
+    const response = await fetch("http://localhost:5038/api/RecipeHub/ChangePassword", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
+    console.log(response.status);
+    if (response.status == 200) {
+        redirectTo(null, "/profile?name=" + getSessionData().name);
+    } else {
+        alert("Incorrect Password");
+    }
+}
+
+const removeUser = async (e, password) => {
+    console.log(password);
+
+    const data = {};
+
+    data.password = await sha512(password);
+    data.name = getSessionData().name
+
+    const response = await fetch("http://localhost:5038/api/RecipeHub/RemoveAccount", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    if (response.status == 200) {
+        logOut(e);
+    } else {
+        alert("Error Deleting Account");
+    }
+}
+
+const searchSaved = async (query) => {
+    if (query)
+        query = query.toLowerCase()
+
+    const profile = await getProfile(getSessionData().name)
+
+    console.log(profile)
+
+    const recipes = [];
+    for (let r of profile.saved) {
+        const recipe = await getRecipeFromID(r);
+        if (recipe.name.toLowerCase().includes(query)) {
+            recipes.push(recipe);
+        }
+    }
+    return recipes
 }
 
 const getProfiles = async (search, page) => {
@@ -236,16 +335,40 @@ const getProfiles = async (search, page) => {
     }
 }
 
-const addComment = (recipe, comment) => {
-
+const addComment = async (recipe, comment) => {
+    console.log(comment);
+    try {
+        const response = await fetch("http://localhost:5038/api/RecipeHub/AddComment", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({recipe: recipe, comment: comment})
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        return { maxPages: 0, profiles: [] }; // Return empty data or handle error as needed
+    }
 }
 
-const deleteComment = (recipe, comment) => {
-
-}
-
-const toggleSaved = (recipeID) => {
-    alert(recipeID)
+const deleteComment = async (recipe, comment) => {
+    console.log(comment);
+    try {
+        const response = await fetch("http://localhost:5038/api/RecipeHub/RemoveComment", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({recipe: recipe, comment: comment})
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        return { maxPages: 0, profiles: [] }; // Return empty data or handle error as needed
+    }
 }
 
 module.exports = {
@@ -271,5 +394,7 @@ module.exports = {
     getProfiles: getProfiles,
     toggleSaved: toggleSaved,
     addComment,
-    deleteComment
+    deleteComment,
+    removeUser,
+    setSessionData
 };

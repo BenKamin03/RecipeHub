@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { faPlus, faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Session from "../../middleware/Session";
+import CuisinesSubmitOptions from "../../components/CuisineSubmitOptions";
 
 const Submit = () => {
 
@@ -20,6 +21,8 @@ const Submit = () => {
 	const [tagsText, setTagsText] = useState("")
 	const [servings, setServings] = useState(0);
 	const [time, setTime] = useState();
+	const [cuisine, setCuisine] = useState(null);
+	const [isHoveringCuisine, setIsHoveringCuisine] = useState(false);
 
 	const handleFileChange = (event) => {
 		const selectedFile = event.target.files[0];
@@ -67,8 +70,10 @@ const Submit = () => {
 		setTags(newText.split("#").splice(1));
 	}
 
-	const handleSumbit = (e) => {
-		if (title === "") {
+	const handleSumbit = async (e) => {
+		if (cuisine == null) {
+			alert("Please Select a Cuisine")
+		} else if (title === "") {
 			alert("Title is Empty")
 		} else if (description === "") {
 			alert("Description is Empty")
@@ -83,7 +88,7 @@ const Submit = () => {
 		} else if (file === null) {
 			alert("No File Submitted")
 		} else {
-			Session.submitRecipe(e, { cookTime: time, servings: servings, file: file, tags: tags, description: description, title: title, ingredients: ingredients, instruction: instruction })
+			return await Session.submitRecipe(e, { cuisine: cuisine.cuisine, cookTime: time, servings: servings, img: file, tags: tags, description: description, name: title, ingredients: ingredients, instructions: instruction })
 		}
 	}
 
@@ -91,6 +96,31 @@ const Submit = () => {
 		<div className="mx-24 py-12">
 			<h1 className="text-center font-semibold text-3xl mb-4">Submit a Recipe</h1>
 			<form className="flex justify-center items-center text-center flex-col gap-2">
+				{cuisine != null ? (
+					<div className="transition w-2/3 ease-in-out relative rounded-3xl h-24" onMouseEnter={(e) => setIsHoveringCuisine(true)} onMouseLeave={(e) => setIsHoveringCuisine(false)}>
+						<img
+							src={cuisine.img}
+							className="h-full w-full rounded-3xl mr-4 object-center object-cover bg-black"
+							alt={cuisine.name}
+						/>
+						<div className='absolute left-0 top-0 rounded-3xl h-full w-full flex justify-center items-center text-white bg-black bg-opacity-60'>
+							<div className="w-full h-full justify-center items-center flex">
+								<p className="text-4xl">{cuisine.cuisine}</p>
+							</div>
+						</div>
+						{isHoveringCuisine &&
+							<button
+								onClick={(e) => { setCuisine(null) }}
+								className="top-0 right-0 bg-red-500 text-white rounded-md py-2 px-3 scale-125 hover:bg-red-300 transition-all ease-in-out absolute">
+								<FontAwesomeIcon className="" icon={faTimes} />
+							</button>
+						}
+					</div>
+				) :
+					<div className="w-2/3">
+						<CuisinesSubmitOptions setCuisine={setCuisine} />
+					</div>
+				}
 				<input
 					type="text"
 					name="RecipeName"
@@ -135,14 +165,14 @@ const Submit = () => {
 					/>
 				</div>
 				<div className="grid grid-cols-2 gap-0 w-2/3 pt-1">
-					<label htmlFor="RecipeImage" className="pr-2 border-r-2">
+					<div className="pr-2 border-r-2" onClick={(e) => {
+						const src = window.prompt("Enter Source:");
+						setFile(src || file);
+					}}>
 						<div className="mb-5 cursor-pointer">
 							{file ? (
-								<div
-									className="rounded-lg bg-no-repeat bg-center bg-cover aspect-square"
-									style={{
-										backgroundImage: `url(${URL.createObjectURL(file)})`,
-									}}>
+								<div className="rounded-lg bg-no-repeat bg-center bg-cover aspect-square relative">
+									<img className="absolute h-full w-full rounded-md mr-4 object-center object-cover bg-black" src={file} />
 									<div className="bg-neutral-900 bg-opacity-0 opacity-0 hover:bg-opacity-80 hover:opacity-100 transition-all ease-in-out rounded-lg aspect-square flex justify-center items-center flex-col">
 										<h1 className="text-xl text-white">Upload Image</h1>
 										<FontAwesomeIcon className="text-5xl text-white" icon={faUpload} />
@@ -158,8 +188,7 @@ const Submit = () => {
 						<div className="w-full text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center justify-center mr-2 mb-2 cursor-pointer">
 							<span className="text-center ml-2">Upload</span>
 						</div>
-						<input id="RecipeImage" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
-					</label>
+					</div>
 
 					<div className="inline-block text-center pl-2 w-full justify-end">
 						<div className="overflow-auto aspect-square mb-4">

@@ -83,6 +83,9 @@ const EditProfile = () => {
     newProfile["img"] = file;
     newProfile["showcase"] = showcase.map((recipe) => recipe == null ? "null" : recipe);
     Session.updateProfile(newProfile);
+    // const data = Session.getSessionData();
+    // data.img = file;
+    // Session.setSessionData(data)
     Session.redirectTo(e, `/profile?name=${profile.name}`)
   }
 
@@ -91,14 +94,15 @@ const EditProfile = () => {
       {profile !== null ?
         <div className='grid grid-cols-4 gap-4'>
           <div className='pr-4 border-r-2 mt-6'>
-            <label htmlFor="RecipeImage" className="h-min">
+            <div className="h-min" onClick={(e) => {
+              const src = window.prompt("Enter Source:");
+              setFile(src || file);
+            }}>
               <div className="mb-5 cursor-pointer mt-6 pr-2">
                 {file ? (
                   <div
-                    className="rounded-lg bg-no-repeat bg-center bg-cover aspect-square"
-                    style={{
-                      backgroundImage: `url(${file})`,
-                    }}>
+                    className="rounded-lg bg-no-repeat bg-center bg-cover aspect-square relative">
+                    <img className="absolute h-full w-full rounded-full mr-4 object-center object-cover bg-black" src={file} />
                     <div className="bg-neutral-900 bg-opacity-0 opacity-0 hover:bg-opacity-80 hover:opacity-100 transition-all ease-in-out rounded-full aspect-square flex justify-center items-center flex-col">
                       <h1 className="text-xl text-white">Upload Image</h1>
                       <FontAwesomeIcon className="text-5xl text-white" icon={faUpload} />
@@ -114,8 +118,7 @@ const EditProfile = () => {
               <div className="w-full text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center justify-center mr-2 mb-2 cursor-pointer">
                 <span className="text-center ml-2">Upload</span>
               </div>
-              <input id="RecipeImage" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
-            </label>
+            </div>
             <h1 className='text-xl font-semibold text-center'>{profile.name}</h1>
           </div>
           <div className='w-full h-min col-span-3 mb-4'>

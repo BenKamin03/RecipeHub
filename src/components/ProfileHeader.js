@@ -9,7 +9,7 @@ const ProfileHeader = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState(Session.isLoggedIn() ? Session.getSessionData().name : "Logged Out");
-    const [pfp, setPFP] = useState(Session.isLoggedIn() ? Session.getSessionData().img : "/favicon.ico");
+    const [pfp, setPFP] = useState("/favicon.ico");
     const [profile, setProfile] = useState(Session.getProfile(null));
     const dropdownRef = useRef(null);
 
@@ -43,7 +43,13 @@ const ProfileHeader = () => {
     }, []);
 
     useEffect(() => {
-        setProfile(Session.getProfile(name));
+        const fetchData = async () => {
+            const profile = await Session.getProfile(name)
+            setProfile(profile);
+            setPFP(profile.img);
+            console.log(profile);
+        }
+        fetchData();
     }, [name])
 
 

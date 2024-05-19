@@ -19,4 +19,8 @@ const connectDB = async () => {
     }
 };
 
-module.exports = { connectDB };
+const generateUniqueID = () => {
+    return new mongoose.Types.ObjectId().toString();
+}
+
+module.exports = { connectDB, generateUniqueID };

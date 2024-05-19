@@ -26,17 +26,9 @@ const Profile = () => {
 	const [isFollowing, setIsFollowing] = useState(false);
 	const [showcase, setShowcase] = useState([]);
 	const [allRecipes, setAllRecipes] = useState([]);
-
-
-
-	const checkIsFollowing = () => {
-		if (!isSelf) {
-			const userFollowers = Session.getProfile(Session.getSessionData().name).following;
-			return (userFollowers.findIndex((name) => name == profile.name) != -1);
-		} else {
-			return (false);
-		}
-	}
+	const [toggleFollow, setToggleFollow] = useState(0);
+	const [followers, setFollowers] = useState(0);
+	const [following, setFollowing] = useState(0);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -68,13 +60,21 @@ const Profile = () => {
 
 				setAllRecipes(l_allRecipes);
 
+				setFollowers(response.followers.length);
+				setFollowing(response.following.length);
+
 				setProfile(response);
 
 				if (isLoggedIn) {
 					setIsSelf(isLoggedIn && Session.getSessionData().name === response.name || false);
 					setTimeout(0, () => setIsFollowing((((Session.getProfile(Session.getSessionData().name)).following.includes(response.name)))));
 					if (!(isLoggedIn && Session.getSessionData().name === response.name || false))
-						setIsFollowing(checkIsFollowing());
+						if (!isSelf) {
+							const userFollowers = (await Session.getProfile(Session.getSessionData().name)).following;
+							setIsFollowing(userFollowers.findIndex((name) => name == response.name) != -1);
+						} else {
+							setIsFollowing(false);
+						}
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -84,10 +84,22 @@ const Profile = () => {
 		fetchData();
 	}, []);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			if (Session.isLoggedIn() && profile != null) {
+				setIsFollowing(await Session.toggleFollow(profile.name));
 
-	const updateFollowing = () => {
-		setIsFollowing(checkIsFollowing());
-	}
+				const response = await Session.getProfile(queries.name);
+
+				setFollowers(response.followers.length);
+				setFollowing(response.following.length);
+			} else
+				setIsFollowing(false);
+		}
+
+		fetchData();
+	}, [toggleFollow, profile])
+
 
 	return (
 		<div className="mx-24">
@@ -98,14 +110,14 @@ const Profile = () => {
 							<div className="w-full aspect-square bg-gray-500 rounded-full">
 								<img
 									src={profile.img}
-									className="h-full w-full rounded-full mr-4 object-center object-cover bg-black"
+									className="h-full w-full rounded-full aspect-square mr-4 object-center object-cover bg-black"
 									alt="Profile"
 								/>
 							</div>
 							<h1 className="text-center text-xl font-semibold">{profile.name}</h1>
 							<a href={`/following?name=${profile.name}`} className="flex flex-row gap-4 cursor-pointer">
-								<p className="font-extrabold">{profile.followers.length} <label className="font-light cursor-pointer">Follower{profile.followers.length !== 1 && "s"}</label></p>
-								<p className="font-extrabold">{profile.following.length} <label className="font-light cursor-pointer">Following</label></p>
+								<p className="font-extrabold">{followers} <label className="font-light cursor-pointer">Follower{followers !== 1 && "s"}</label></p>
+								<p className="font-extrabold">{following} <label className="font-light cursor-pointer">Following</label></p>
 							</a>
 							{isLoggedIn ?
 								<div className="w-full">
@@ -129,7 +141,7 @@ const Profile = () => {
 										:
 										<div
 											onClick={(e) => {
-												Session.toggleFollow(profile.name, [updateFollowing])
+												setToggleFollow(toggleFollow + 1);
 											}}
 											className={`cursor-pointer relative bg-black border-black text-white border-2 flex justify-center items-center rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out gap-4`}>
 											<FontAwesomeIcon className="absolute left-0 ml-3" icon={isFollowing ? faUserMinus : faUserPlus} />{isFollowing ? <p>Unfollow</p> : <p>Follow</p>}
@@ -157,11 +169,13 @@ const Profile = () => {
 						</div>
 					</div>
 					<div className="col-span-3">
-						<div>
-							<h1 className="mb-2 mt-6 text-xl font-semibold">Showcase</h1>
-							<RecipeRow recipes={showcase} />
-						</div>
-						{profile.allRecipes.length > 0 &&
+						{showcase.filter((recipe) => recipe !== "null").length > 0 &&
+							<div>
+								<h1 className="mb-2 mt-6 text-xl font-semibold">Showcase</h1>
+								<RecipeRow recipes={showcase} />
+							</div>
+						}
+						{allRecipes.length > 0 &&
 							<div className="">
 								<h1 className="mb-2 mt-6 text-xl font-semibold">Cuisine Breakdown</h1>
 								<div className="flex flex-row border-2 border-black rounded-md p-4">
@@ -174,10 +188,20 @@ const Profile = () => {
 								</div>
 							</div>
 						}
-						<div>
-							<h1 className="mb-2 mt-6 text-xl font-semibold">All Recipes</h1>
-							<RecipeGrid recipes={allRecipes} />
-						</div>
+						{allRecipes.length > 0 &&
+							<div>
+								<h1 className="mb-2 mt-6 text-xl font-semibold">All Recipes</h1>
+								<RecipeGrid recipes={allRecipes} />
+							</div>
+						}
+
+						{allRecipes.length === 0 &&
+							<div className="w-full h-full flex items-center justify-center">
+								<h1 className="">
+									No Recipes Yet
+								</h1>
+							</div>
+						}
 					</div>
 				</div>
 				:
