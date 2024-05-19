@@ -19,6 +19,7 @@ const EditProfile = () => {
   const [showcase, setShowcase] = useState([]);
   const [isSelectingShowcase, setIsSelectingShowcase] = useState(false)
   const [selectionIndex, setSelectionIndex] = useState(-1);
+  const [allRecipes, setAllRecipes] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,10 +28,34 @@ const EditProfile = () => {
 
         setFile(response.img);
         setDescription(response.bio)
-        setShowcase(response.showcase.map((recipe) => recipe == "null" ? null : recipe));
+
+        const l_showcase = [];
+
+        for (let id of response.showcase) {
+
+          if (id !== null) {
+            const rec = await Session.getRecipeFromID(id);
+
+            l_showcase.push(rec);
+          } else {
+            l_showcase.push(id);
+          }
+
+        }
+
+        setShowcase(l_showcase);
+
+        console.log(l_showcase)
+
+        for (let r in response) {
+          if (r == "allRecipes") {
+            setAllRecipes(response[r])
+          }
+        }
 
 
-        console.log(response)
+        console.log(allRecipes);
+
 
         setProfile(response)
       } catch (error) {
@@ -40,15 +65,6 @@ const EditProfile = () => {
 
     fetchData();
   }, []);
-
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    } else {
-      setFile(null);
-    }
-  };
 
   const handleSelectionChange = (recipe) => {
     if (isSelectingShowcase) {
@@ -81,11 +97,10 @@ const EditProfile = () => {
     const newProfile = profile;
     newProfile["bio"] = description;
     newProfile["img"] = file;
-    newProfile["showcase"] = showcase.map((recipe) => recipe == null ? "null" : recipe);
+    newProfile["showcase"] = showcase.map((recipe) => recipe != null ? recipe.id : null);
+    console.log(newProfile.showcase)
+    console.log(newProfile)
     Session.updateProfile(newProfile);
-    // const data = Session.getSessionData();
-    // data.img = file;
-    // Session.setSessionData(data)
     Session.redirectTo(e, `/profile?name=${profile.name}`)
   }
 
@@ -127,10 +142,10 @@ const EditProfile = () => {
               <div className={`grid grid-cols-3 gap-4`}>
                 {showcase.map((recipe, index) => (
                   <div key={index}>
-                    {recipe == null ?
-                      <EditShowcaseCard setSelectionIndex={setSelectionIndex} selectionIndex={selectionIndex} isSelecting={isSelectingShowcase} setIsSelecting={setIsSelectingShowcase} key={index} isEmpty={true} setShowcase={setShowcase} index={index} showcase={showcase} />
+                    {recipe == null || Object.keys(recipe) == 0 ?
+                      <EditShowcaseCard isEmpty={true} setSelectionIndex={setSelectionIndex} selectionIndex={selectionIndex} isSelecting={isSelectingShowcase} setIsSelecting={setIsSelectingShowcase} key={index} showcase={showcase} setShowcase={setShowcase} index={index} />
                       :
-                      <EditShowcaseCard setSelectionIndex={setSelectionIndex} selectionIndex={selectionIndex} isSelecting={isSelectingShowcase} setIsSelecting={setIsSelectingShowcase} key={index} showcase={showcase} setShowcase={setShowcase} index={index} recipe={recipe} />
+                      <EditShowcaseCard isEmpty={false} setSelectionIndex={setSelectionIndex} selectionIndex={selectionIndex} isSelecting={isSelectingShowcase} setIsSelecting={setIsSelectingShowcase} key={index} showcase={showcase} setShowcase={setShowcase} index={index} recipe={recipe} />
                     }
                   </div>
                 ))}
@@ -138,11 +153,9 @@ const EditProfile = () => {
               {isSelectingShowcase &&
                 <div className='mt-4 p-4 border-2 rounded-lg'>
                   <h1 className='text-center mb-4'>Your Recipes</h1>
-                  {convertToDoubleArray(profile.allRecipes.map((recipe, index) => Session.getRecipeFromID(recipe)).filter(recipe => {
-                    return showcase != null && !showcase.some(showcasedRecipe => showcasedRecipe != null && showcasedRecipe.id === recipe.id);
-                  }), 3).map((recipes, index) => (
+                  {convertToDoubleArray(allRecipes).map((recipes, index) => (
                     <div className={`grid grid-cols-${recipes.length} gap-4 mb-4`}>
-                      {recipes.map((recipe, index) => (
+                      {recipes.filter((recipe) => !showcase.some(showcaseEle => showcaseEle && showcaseEle.id === recipe)).map((recipe, index) => (
                         <RecipeSelector key={index} recipe={recipe} selectRecipe={handleSelectionChange} />
                       ))}
                     </div>

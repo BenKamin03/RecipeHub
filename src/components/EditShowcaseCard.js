@@ -1,18 +1,17 @@
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Session from "../middleware/Session";
 
-const EditShowcaseCard = ({ showcase, recipe, setSelectionIndex, selectionIndex, isSelecting, setIsSelecting, index, setShowcase, isEmpty }) => {
+const EditShowcaseCard = ({ showcase, recipe, setSelectionIndex, selectionIndex, isSelecting, setIsSelecting, index, setShowcase, isEmpty}) => {
     const [visible, setVisible] = useState(false);
 
     const [refreshKey, setRefreshKey] = useState(0);
 
+
     const handleRefresh = () => {
         setRefreshKey(prevKey => prevKey + 1);
     };
-
-    const recipeData = Session.getRecipeFromID(recipe);
 
     const handleRemove = (e) => {
         console.log(showcase)
@@ -45,16 +44,15 @@ const EditShowcaseCard = ({ showcase, recipe, setSelectionIndex, selectionIndex,
             className={`hover:scale-110 hover:z-10 transition rounded-lg ease-in-out border-2 p-2 bg-white ${selectionIndex === index ? "drop-shadow-[0_0px_10px_rgba(255,0,0,1)]" : ""}`}
             onMouseOver={(e) => setVisible(true)}
             onMouseLeave={(e) => setVisible(false)}>
-
             {!isEmpty ?
                 <div>
                     <div>
                         <div className={"h-64 relative w-full bg-gray-500 rounded-md mr-4 bg-no-repeat bg-center bg-cover"}>
 
                             <img
-                                src={recipeData.img}
+                                src={recipe.img}
                                 className="h-full w-full rounded-md mr-4 object-center object-cover bg-black"
-                                alt={recipeData.name}
+                                alt={recipe.name}
                             />
                             <div
                                 className={
@@ -65,10 +63,10 @@ const EditShowcaseCard = ({ showcase, recipe, setSelectionIndex, selectionIndex,
                                     <div className="h-full w-full cursor-pointer"
                                         onClick={changeRecipe}>
                                         <div className="flex flex-col justify-center items-center h-full">
-                                            <p className="text-center text-white mx-4 line-clamp-1 font-bold">{recipeData.name}</p>
-                                            <p className="text-white line-clamp-5 mx-2 text-center">{recipeData.description}</p>
-                                            {recipeData.tags != null && <p className="text-center text-white opacity-50 mx-4 line-clamp-1 font-light text-sm">
-                                                {recipeData.tags.map((tag, index) => (
+                                            <p className="text-center text-white mx-4 line-clamp-1 font-bold">{recipe.name}</p>
+                                            <p className="text-white line-clamp-5 mx-2 text-center">{recipe.description}</p>
+                                            {recipe.tags != null && <p className="text-center text-white opacity-50 mx-4 line-clamp-1 font-light text-sm">
+                                                {recipe.tags.map((tag, index) => (
                                                     <label className="mr-2" key={index}>#{tag}</label>
                                                 ))}
                                             </p>}
@@ -77,7 +75,7 @@ const EditShowcaseCard = ({ showcase, recipe, setSelectionIndex, selectionIndex,
                                 )}
                             </div>
                         </div>
-                        <p className="text-center line-clamp-1 mx-4">{recipeData.name}</p>
+                        <p className="text-center line-clamp-1 mx-4">{recipe.name}</p>
                     </div>
                     <button
                         onClick={handleRemove}

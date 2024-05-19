@@ -42,12 +42,21 @@ const Profile = () => {
 				const l_showcase = [];
 
 				for (let id of response.showcase) {
-					if (id !== "null") {
-						l_showcase.push(await Session.getRecipeFromID(id));
+
+					if (id !== null) {
+						console.log(id)
+						const rec = await Session.getRecipeFromID(id);
+						console.log(rec)
+						if (rec !== null && Object.keys(rec).length !== 0) {
+
+							l_showcase.push(rec);
+						}
 					}
 				}
 
 				setShowcase(l_showcase);
+
+				console.log(showcase)
 
 				const l_allRecipes = [];
 
@@ -62,6 +71,8 @@ const Profile = () => {
 
 				setFollowers(response.followers.length);
 				setFollowing(response.following.length);
+
+				console.log(response)
 
 				setProfile(response);
 
@@ -169,7 +180,7 @@ const Profile = () => {
 						</div>
 					</div>
 					<div className="col-span-3">
-						{showcase.filter((recipe) => recipe !== "null").length > 0 &&
+						{showcase.length > 0 &&
 							<div>
 								<h1 className="mb-2 mt-6 text-xl font-semibold">Showcase</h1>
 								<RecipeRow recipes={showcase} />

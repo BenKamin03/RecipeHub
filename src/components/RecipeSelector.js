@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Session from "../middleware/Session";
 
 const RecipeRowItem = ({ recipe, selectRecipe }) => {
 	const [visible, setVisible] = useState(false);
+	const [recipeData, setRecipeData] = useState(recipe);
 
-	const recipeData = Session.getRecipeFromID(recipe);
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+
+				const response = await Session.getRecipeFromID(recipe);
+                console.log(response)
+
+				setRecipeData(response);
+				console.log(recipeData);
+			} catch (error) {
+				console.error('Error fetching recipe data:', error);
+			}
+		};
+
+		fetchData();
+	}, [recipe]);
+
 
 	return (
 		<div
 			className="hover:scale-110 hover:z-10 rounded-lg transition ease-in-out cursor-pointer"
 			onClick={(e) => {
-				selectRecipe(recipe)
+				selectRecipe(recipeData)
 			}}
 			onMouseOver={(e) => setVisible(true)}
 			onMouseLeave={(e) => setVisible(false)}>

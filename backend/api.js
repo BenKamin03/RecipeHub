@@ -61,7 +61,7 @@ async function getRandomRecipe(res) {
             const count = await Recipe.countDocuments(); // Get the total count of recipes
             const randomIndex = Math.floor(Math.random() * count); // Generate a random index
             const randomRecipe = await Recipe.findOne().skip(randomIndex); // Get a random recipe
-            res.json(randomRecipe._id); // Send the random recipe as JSON response
+            res.json(randomRecipe.id); // Send the random recipe as JSON response
         })
         .catch(error => {
             console.error('Error connecting to the database:', error);
@@ -104,7 +104,7 @@ async function getRecipe(res, id) {
     connectDB()
         .then(async () => {
             // Fetch all users from the "Users" collection
-            const recipe = await Recipe.findOne({ _id: id });
+            let recipe = await Recipe.findOne({ id: id });
             console.log('Recipe:', recipe);
             res.json(recipe);
         })
@@ -130,34 +130,15 @@ async function createUser(res, userData) {
 async function createRecipe(res, recipeData) {
     try {
         recipeData.id = generateUniqueID();
+
         const newRecipe = await Recipe.create(recipeData);
         console.log('User created successfully:', newRecipe);
 
-        let id = newRecipe.id;
-
-        // Get the last character of the string
-        let lastChar = id.charAt(id.length - 1);
-
-        // Check if the last character is a letter or a digit
-        if (/[a-zA-Z0-9]/.test(lastChar)) {
-            // Get the Unicode code of the last character and increase it by 1
-            let nextCharCode = lastChar.charCodeAt(0) + 1;
-            // If the character is 'z' or 'Z', wrap around to 'a' or 'A'
-            if ((lastChar >= 'a' && lastChar <= 'z' && nextCharCode > 'z'.charCodeAt(0)) ||
-                (lastChar >= 'A' && lastChar <= 'Z' && nextCharCode > 'Z'.charCodeAt(0))) {
-                nextCharCode -= 26;
-            }
-            // Convert the next Unicode code back to a character
-            let nextChar = String.fromCharCode(nextCharCode);
-            // Replace the last character with the next character
-            id = id.substring(0, id.length - 1) + nextChar;
-        }
-
-        newRecipe.id = id;
+        
 
         console.log(await User.updateOne({ name: recipeData.author }, {
             $addToSet: {
-                allRecipes: newRecipe.id
+                allRecipes: recipeData.id
             }
         }))
 
@@ -172,45 +153,25 @@ const removeRecipe = async (res, recipeData) => {
     try {
         let id = recipeData.id;
 
-        // Get the last character of the string
-        let lastChar = id.charAt(id.length - 1);
-
-        // Check if the last character is a letter or a digit
-        if (/[a-zA-Z0-9]/.test(lastChar)) {
-            // Get the Unicode code of the last character and increase it by 1
-            let nextCharCode = lastChar.charCodeAt(0) + 1;
-            // If the character is 'z' or 'Z', wrap around to 'a' or 'A'
-            if ((lastChar >= 'a' && lastChar <= 'z' && nextCharCode > 'z'.charCodeAt(0)) ||
-                (lastChar >= 'A' && lastChar <= 'Z' && nextCharCode > 'Z'.charCodeAt(0))) {
-                nextCharCode -= 26;
-            }
-            // Convert the next Unicode code back to a character
-            let nextChar = String.fromCharCode(nextCharCode);
-            // Replace the last character with the next character
-            id = id.substring(0, id.length - 1) + nextChar;
-        }
-
         console.log(id);
         const deletedRecipe = await Recipe.findOneAndDelete({ id: id });
         console.log(deletedRecipe)
         if (deletedRecipe) {
-
-            const user = await User.findOne({ name: recipeData.author });
-            const users = await User.find({});
-
-            user.allRecipes.pull(id);
-            user.showcase.pull(id);
-
-            await user.save();
-
-            for (const u of users) {
-                u.saved.pull(id);
-                await u.save();
-            }
+            console.log("deleted")
+            await User.updateMany(
+                {},
+                {
+                    $pull: {
+                        showcase: id,
+                        allRecipes: id,
+                        saved: id
+                    }
+                }
+            );
 
             res.status(200).send("true")
         } else {
-            res.status(404).send("false");
+            res.status(400).send("false");
         }
     } catch (error) {
         console.error('Error creating user:', error);
@@ -269,7 +230,7 @@ async function toggleSaved(res, data) {
 
     console.log(data.user)
     try {
-        const recipe = await Recipe.findOne({ _id: data.recipe });
+        const recipe = await Recipe.findOne({ id: data.recipe });
         const user = await User.findOne({ name: data.user });
 
         console.log(recipe);

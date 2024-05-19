@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { connectionString, db } = require('./credentials');
+const { v4: uuidv4 } = require('uuid');
 
 // Function to connect to the MongoDB database
 const connectDB = async () => {

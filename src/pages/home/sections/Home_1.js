@@ -60,17 +60,6 @@ const Home_1 = () => {
 			<img
 				src="https://media.discordapp.net/attachments/500465447162871814/1241545406588911676/healthy-food-png-hd-eating-raw-foods-is-one-of-the-best-gifts-that-you-can-ever-give-to-yourself-4256-140204961.png?ex=664a96c3&is=66494543&hm=29018166a616369f716ef24b4ef00324ad26450c291e8d476e72ba84f0732655&=&format=webp&quality=lossless&width=1348&height=897"
 				className="h-full w-full rounded-md mr-4 object-center object-contain col-span-2 aspect-square" />
-
-
-
-
-
-
-			{/* <img
-						src={cuisines[currCuisine ? currCuisine : 0].img}
-						className="h-full w-full rounded-3xl mr-4 object-center object-cover bg-black"
-						alt="Profile"
-					/> */}
 		</div>
 	);
 };

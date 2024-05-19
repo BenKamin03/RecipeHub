@@ -63,11 +63,6 @@ const logIn = async (e, userData) => {
     if (response.status == 200) {
         const json = await response.json();
 
-        for (let i in json) {
-            if (i == "img")
-                userData.img = json[i];
-        }
-
         setSessionData(userData);
         redirectTo(e, "/")
         return true;

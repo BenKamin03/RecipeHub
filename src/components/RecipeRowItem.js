@@ -25,7 +25,7 @@ const RecipeRowItem = ({ recipe }) => {
 			className="hover:scale-110 transition ease-in-out cursor-pointer"
 			onClick={(e) => {
 				e.stopPropagation();
-				window.location.href = "/recipe?id=" + recipe._id;
+				window.location.href = "/recipe?id=" + recipe.id;
 			}}
 			onMouseOver={(e) => setVisible(true)}
 			onMouseLeave={(e) => setVisible(false)}>
