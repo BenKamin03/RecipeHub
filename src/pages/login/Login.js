@@ -26,7 +26,7 @@ const Login = () => {
                     Session.logIn(e, { name, password })
                 }}>
                 <h1 className='text-center font-semibold text-3xl'>Log In</h1>
-                <input required onChange={handleNameChange} type='text' id='name' placeholder='Name or Email' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
+                <input required onChange={handleNameChange} type='text' id='name' placeholder='Name' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <input required onChange={handlePasswordChange} type='password' id='password' placeholder='Password' className='py-2 my-1 w-full border-2 rounded-lg text-center' />
                 <div className='flex justify-center content-center mt-4'>
                     <div className='grid grid-cols-2 w-1/2 gap-3'>

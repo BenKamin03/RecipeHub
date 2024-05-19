@@ -18,14 +18,16 @@ const ChefCard = ({ profile }) => {
                     rating += comment.rating / response.comments.length;
                 }
 
-                setAllRecipes(prevRecipes => [...prevRecipes, response]);
-                rating = Math.round(rating / length * 100) / 100
+                if (!allRecipes.some((recipe) => recipe.id != response.id))
+                    setAllRecipes(prevRecipes => [...prevRecipes, response]);
+                rating = Math.round(rating / length * 100) / 100;
                 console.log(allRecipes)
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
+        const ids = [];
         profile.allRecipes.forEach((id) => fetchData(id));
     }, []);
 

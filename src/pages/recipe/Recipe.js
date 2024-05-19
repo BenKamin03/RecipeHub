@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Session from '../../middleware/Session'
+import Session, { isLoggedIn } from '../../middleware/Session'
 import Ingredient from '../../components/Ingredient';
 import Comment from '../../components/Comment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -212,7 +212,7 @@ const Recipe = () => {
                         <div className='w-2/3'>
                             <h1 className='text-center text-xl my-4'>Comments</h1>
 
-                            <div className='relative'>
+                            {isLoggedIn() && <div className='relative'>
                                 <textarea
                                     type="text"
                                     name="comment"
@@ -229,7 +229,7 @@ const Recipe = () => {
                                     <FontAwesomeIcon onClick={(e) => setRating(5)} onMouseEnter={(e) => setHoverRating(5)} onMouseLeave={(e) => setHoverRating(-1)} icon={(hoverRating !== -1 ? hoverRating : commentRating) >= 5 ? faStar : outlineStar} />
                                 </div>
                                 <FontAwesomeIcon onClick={(e) => addComment()} className={`absolute top-2 right-2 p-2 rounded-lg bg-neutral-900 text-white ${comment.length > 0 ? "hover:scale-105 cursor-pointer" : "opacity-10"} hover:bg-neutral-800 transition-all ease-in-out`} icon={faPaperPlane} />
-                            </div>
+                            </div>}
 
                             {recipe.comments.length > 0 ?
                                 recipe.comments.map((comment, index) => (

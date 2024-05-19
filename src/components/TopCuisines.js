@@ -15,12 +15,17 @@ const TopCuisines = ({ allRecipes, max }) => {
 					backgroundColor: item.color,
 				}));
 
+				const recipeIds = [];
 				allRecipes.map((recipe, index) => {
-					data.map((d, index) => {
-						if (d.label == recipe.cuisine) {
-							d.value++;
-						}
-					})
+					if (recipeIds.indexOf(recipe.id) == -1) {
+						recipeIds.push(recipe.id)
+						data.map((d, index) => {
+
+							if (d.label == recipe.cuisine) {
+								d.value++;
+							}
+						})
+					}
 				})
 
 				const sortedData = data.sort((a, b) => {
@@ -40,7 +45,7 @@ const TopCuisines = ({ allRecipes, max }) => {
 	}, [allRecipes]);
 
 	const getGrayScaleValue = (color) => {
-		
+
 	}
 
 	return (
@@ -50,7 +55,7 @@ const TopCuisines = ({ allRecipes, max }) => {
 					.filter((item) => item.value > 0)
 					.slice(0, max)
 					.map((d, index) => (
-						<div key={index} className={`flex flex-row justify-between gap-12 p-2 rounded-md`} style={{backgroundColor: d.backgroundColor}}>
+						<div key={index} className={`flex flex-row justify-between gap-12 p-2 rounded-md`} style={{ backgroundColor: d.backgroundColor }}>
 							<p>{d.label}</p>
 							<p>{d.value}</p>
 						</div>

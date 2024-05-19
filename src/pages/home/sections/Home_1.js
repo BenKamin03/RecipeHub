@@ -4,6 +4,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import Button from "../../../components/Button.js";
 import Session from "../../../middleware/Session.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDice, faShuffle } from "@fortawesome/free-solid-svg-icons";
 
 const Home_1 = () => {
 
@@ -44,14 +46,19 @@ const Home_1 = () => {
 		<div className="grid grid-cols-5 w-full ">
 			<div className="col-span-3 flex items-center">
 				<div className="">
-					<h1 className="text-5xl font-black mb-6">Huge selection of delicious recipe ideas</h1>
+					<h1 className="text-5xl font-black mb-6">Great selection of appetizing recipe options</h1>
 					<p className="mb-6">
-						Explore our huge selection of delicious recipe ideas including: easy deserts, delicious vegan and vegetarian dinner
-						ideas, gorgeous pasta recipes, quick bakes, family-friendly meals and gluten-free recipes
+						Discover our extensive array of mouth-watering recipes, featuring easy desserts, delectable vegan and vegetarian dinners, stunning pasta dishes, quick bakes, and family-friendly meals.
 					</p>
 					<div className="flex gap-4 w-1/2">
-						<Button textColor={"white"} href={`/recipe?id=${randomRecipe}`} name="I'm Feeling Lucky" mainColor="black" borderColor="black" />
-						
+						<div
+							onClick={(e) => {
+								Session.redirectTo(e, `/recipe?id=${randomRecipe}`)
+							}}
+							className={`cursor-pointer bg-black border-black text-white border-2 flex justify-center items-center text-xl rounded-md w-full h-12 hover:scale-110 transition-all ease-in-out`}>
+							<FontAwesomeIcon icon={faShuffle} className="mr-2" />
+							<p>Surprise Me</p>
+						</div>
 					</div>
 				</div>
 			</div>
