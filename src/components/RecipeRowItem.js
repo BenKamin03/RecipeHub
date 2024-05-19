@@ -11,7 +11,7 @@ const RecipeRowItem = ({ recipe }) => {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-                setProfilePic(await Session.getProfile(recipe.author).img);
+                setProfilePic((await Session.getProfile(recipe.author)).img);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -19,6 +19,31 @@ const RecipeRowItem = ({ recipe }) => {
 
         fetchData();
     }, []);
+
+	function convertToHoursAndMinutes(minutes) {
+        if (minutes < 0) {
+            throw new Error('Input must be a non-negative number of minutes.');
+        }
+    
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+    
+        let result = '';
+    
+        if (hours > 0) {
+            result += `${hours}h`;
+        }
+    
+        if (hours > 0 && remainingMinutes < 10) {
+            result += ' 0';
+        }
+    
+        if (remainingMinutes > 0 || result === '') {
+            result += `${remainingMinutes}m`;
+        }
+    
+        return result;
+    }
 
 	return (
 		<div
@@ -64,7 +89,7 @@ const RecipeRowItem = ({ recipe }) => {
 							</p>}
 							<div className="flex flex-row justify-center content-center text-white opacity-75">
 								<p className="text-center">
-									<FontAwesomeIcon className="mr-2" icon={faClock} />{recipe.cookTime}
+									<FontAwesomeIcon className="mr-2" icon={faClock} />{convertToHoursAndMinutes(recipe.cookTime)}
 								</p>
 
 								<div className="w-2 h-2 rounded-full bg-white m-2" />

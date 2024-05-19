@@ -41,14 +41,24 @@ const Following = () => {
                     <div className='aspect-[1/1.5] overflow-auto border-r-2 pr-2 ml-2'>
                         <h1 className='text-center font-semibold text-xl my-2'>Following</h1>
                         <div className=''>
-                            {following.map((follower, index) => (
+                            {following.length > 0 ? following.map((follower, index) => (
                                 <Follower key={index} followerName={follower} />
-                            ))}
+                            )) :
+                                <p>0 Following</p>
+                            }
                         </div>
                     </div>
                     <div className='aspect-[1/1.5] overflow-auto mx-2'>
                         <h1 className='text-center font-semibold text-xl my-2'>Followers</h1>
-                        {followers.map((follower, index) => <Follower key={index} followerName={follower} />)}
+                        {followers.length > 0 ? followers.map((follower, index) => (
+                            <Follower key={index} followerName={follower} />
+                        )) :
+                            <div className='w-full h-3/4 flex items-center justify-center'>
+                                <p>
+                                    0 Followers
+                                </p>
+                            </div>
+                        }
                     </div>
 
                 </div>

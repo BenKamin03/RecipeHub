@@ -45,7 +45,7 @@ const Recipe = () => {
                     setIsSaved(selfProfile.saved.includes(queries.id))
                     console.log(isSaved);
                 }
-                setProfilePic(await Session.getProfile(response.author).img);
+                setProfilePic((await Session.getProfile(response.author)).img);
 
                 let r = 0
                 for (let comment of response.comments) {
@@ -78,6 +78,32 @@ const Recipe = () => {
             setComment("")
         }
     }
+
+    function convertToHoursAndMinutes(minutes) {
+        if (minutes < 0) {
+            throw new Error('Input must be a non-negative number of minutes.');
+        }
+    
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+    
+        let result = '';
+    
+        if (hours > 0) {
+            result += `${hours}h`;
+        }
+    
+        if (hours > 0 && remainingMinutes < 10) {
+            result += ' 0';
+        }
+    
+        if (remainingMinutes > 0 || result === '') {
+            result += `${remainingMinutes}m`;
+        }
+    
+        return result;
+    }
+    
 
     return (
         <div className='mx-24 my-12'>
@@ -123,7 +149,7 @@ const Recipe = () => {
                                 </div>
                                 <div className="flex flex-row justify-center content-center text-black opacity-75">
                                     <p className="text-center">
-                                        <FontAwesomeIcon className="mr-2" icon={faClock} />{recipe.cookTime}
+                                        <FontAwesomeIcon className="mr-2" icon={faClock} />{convertToHoursAndMinutes(recipe.cookTime)}
                                     </p>
 
                                     <div className="w-2 h-2 rounded-full bg-black m-2" />
@@ -158,7 +184,7 @@ const Recipe = () => {
                                     ))}
                                 </div>
                                 <h1 className='text-center text-xl my-2'>Instructions</h1>
-                                <p>{recipe && recipe.instructions.split('\\n').map((line, index) => (
+                                <p className='text-center'>{recipe && recipe.instructions.split('\n').map((line, index) => (
                                     <React.Fragment key={index}>
                                         {line}
                                         <br />
@@ -202,7 +228,7 @@ const Recipe = () => {
                                     <FontAwesomeIcon onClick={(e) => setRating(4)} onMouseEnter={(e) => setHoverRating(4)} onMouseLeave={(e) => setHoverRating(-1)} icon={(hoverRating !== -1 ? hoverRating : commentRating) >= 4 ? faStar : outlineStar} />
                                     <FontAwesomeIcon onClick={(e) => setRating(5)} onMouseEnter={(e) => setHoverRating(5)} onMouseLeave={(e) => setHoverRating(-1)} icon={(hoverRating !== -1 ? hoverRating : commentRating) >= 5 ? faStar : outlineStar} />
                                 </div>
-                                <FontAwesomeIcon onClick={(e) => addComment()} className={`absolute top-2 right-2 p-2 rounded-lg bg-neutral-900 text-white ${comment.length > 0 ? "hover:scale-105" : "opacity-10"} hover:bg-neutral-800 cursor-pointer transition-all ease-in-out`} icon={faPaperPlane} />
+                                <FontAwesomeIcon onClick={(e) => addComment()} className={`absolute top-2 right-2 p-2 rounded-lg bg-neutral-900 text-white ${comment.length > 0 ? "hover:scale-105 cursor-pointer" : "opacity-10"} hover:bg-neutral-800 transition-all ease-in-out`} icon={faPaperPlane} />
                             </div>
 
                             {recipe.comments.length > 0 ?

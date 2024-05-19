@@ -19,7 +19,8 @@ const recipeSchema = new mongoose.Schema({
             rating: { type: Number, required: true }
         }], required: true
     },
-    cookTime: { type: Number, required: true }
+    cookTime: { type: Number, required: true },
+    servings: {type: Number, required: true}
 });
 
 

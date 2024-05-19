@@ -93,14 +93,14 @@ const EditProfile = () => {
     return doubleArray;
   };
 
-  const handleSumbit = (e) => {
+  const handleSumbit = async (e) => {
     const newProfile = profile;
     newProfile["bio"] = description;
     newProfile["img"] = file;
     newProfile["showcase"] = showcase.map((recipe) => recipe != null ? recipe.id : null);
     console.log(newProfile.showcase)
     console.log(newProfile)
-    Session.updateProfile(newProfile);
+    await Session.updateProfile(newProfile);
     Session.redirectTo(e, `/profile?name=${profile.name}`)
   }
 

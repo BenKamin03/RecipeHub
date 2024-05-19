@@ -109,7 +109,7 @@ const Profile = () => {
 		}
 
 		fetchData();
-	}, [toggleFollow, profile])
+	}, [toggleFollow])
 
 
 	return (
