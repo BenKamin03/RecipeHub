@@ -21,6 +21,9 @@ const Chefs = () => {
         const fetchData = async () => {
             try {
                 const response = await Session.getProfiles();
+
+                console.log(response)
+
                 setProfiles(response.profiles);
 
                 setMaxPages(response.maxPages);

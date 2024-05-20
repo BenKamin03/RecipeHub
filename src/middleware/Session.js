@@ -323,7 +323,7 @@ const getProfiles = async (search, page) => {
     try {
         const response = await fetch("http://localhost:5038/api/RecipeHub/GetUsers" + window.location.search);
         const data = await response.json();
-        return { maxPages: data.length, profiles: data };
+        return data;
     } catch (error) {
         console.error('Error fetching profiles:', error);
         return { maxPages: 0, profiles: [] }; // Return empty data or handle error as needed

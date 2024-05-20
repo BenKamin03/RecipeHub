@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { faRefresh, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Session from '../middleware/Session';
 
@@ -30,7 +30,7 @@ const SearchBar = ({ placeholder, filterOptions, onSearch, searchQuery }) => {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={placeholder}
             />
-            <button className='py-2 px-3 bg-black text-white rounded-lg'><FontAwesomeIcon icon={faRefresh} /></button>
+            <button onClick={(e) => onSearch(e, search)} className='py-2 px-3 bg-black text-white rounded-lg'><FontAwesomeIcon icon={faSearch} /></button>
         </div>
     );
 };

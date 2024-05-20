@@ -24,9 +24,10 @@ const Browse = () => {
                 setRecipes(response.recipes);
                 console.log(response.recipes);
                 setMaxPages(response.maxPages);
+                console.log(response.maxPages)
 
                 setIsLeftDisabled(pageNumber == 1);
-                setIsRightDisabled(pageNumber >= maxPages);
+                setIsRightDisabled(pageNumber >= response.maxPages);
 
                 setIsLoading(false);
             } catch (error) {

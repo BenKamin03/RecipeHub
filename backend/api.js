@@ -42,12 +42,28 @@ async function getAllRecipes(res, queries) {
         .then(async () => {
             // Fetch all users from the "Users" collection
             console.log(getQueries(queries));
+
+            const pageNumber = (parseInt(queries.page) || 1) - 1;
+
+            delete queries.page
+
             const recipes = await Recipe.find(getQueries(queries));
 
-            const pageNumber = (queries.page || 1) - 1;
 
-            console.log('Recipes:', recipes);
-            res.json({ maxPages: recipes.length / countPerPage, recipes: recipes.slice((pageNumber * countPerPage), (pageNumber + 1) * countPerPage) });
+            const totalRecipes = recipes.length;
+            const maxPages = Math.ceil(totalRecipes / countPerPage);
+
+            const start = (pageNumber) * countPerPage;
+            const end = start + countPerPage;
+            const paginatedRecipes = recipes.slice(start, end);
+
+            console.log(`Max Pages: ${maxPages}`);
+            console.log(`Recipes: ${recipes}`);
+
+            res.json({
+                maxPages: maxPages,
+                recipes: paginatedRecipes
+            });
         })
         .catch(error => {
             console.error('Error connecting to the database:', error);
@@ -74,11 +90,33 @@ async function getAllUsers(res, queries) {
     connectDB()
         .then(async () => {
             // Fetch all users from the "Users" collection
-            console.log(queries)
+            // console.log(queries)
+
+            // const users = await User.find(getQueries(queries));
+            // console.log('Users:', users);
+            // res.json(users);
+
+            const pageNumber = (parseInt(queries.page) || 1) - 1;
+
+            delete queries.page
 
             const users = await User.find(getQueries(queries));
-            console.log('Users:', users);
-            res.json(users);
+
+
+            const totalUsers = users.length;
+            const maxPages = Math.ceil(totalUsers / countPerPage);
+
+            const start = (pageNumber) * countPerPage;
+            const end = start + countPerPage;
+            const paginatedUsers = users.slice(start, end);
+
+            console.log(`Max Pages: ${maxPages}`);
+            console.log(`Users: ${paginatedUsers}`);
+
+            res.json({
+                maxPages: maxPages,
+                profiles: paginatedUsers
+            });
         })
         .catch(error => {
             console.error('Error connecting to the database:', error);
@@ -134,7 +172,7 @@ async function createRecipe(res, recipeData) {
         const newRecipe = await Recipe.create(recipeData);
         console.log('User created successfully:', newRecipe);
 
-        
+
 
         console.log(await User.updateOne({ name: recipeData.author }, {
             $addToSet: {
